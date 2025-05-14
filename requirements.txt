@@ -10,8 +10,11 @@ matplotlib==3.8.1
 seaborn==0.13.0
 tokenizers>=0.8.1rc2
 torch==2.2.0
+torchvision
+torchaudio
 transformers>=3.1.0
 scikit_learn>=0.23.2
 sentencepiece
 lumibot
 alpaca-trade-api
+timedelta
