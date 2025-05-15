@@ -12,12 +12,17 @@ API_KEY = "PKCURVNOMTTKV9O3BHYS"
 API_SECRET = "7vhBLuCOyRLnMWFluEWsedjIiNzXL29o7Crbttuc"
 BASE_URL = "https://paper-api.alpaca.markets/v2"
 
+SYMBOL = "QQQ"
+CASH_AT_RISK = 0.4
+AVARICE = 0.3
+RISK_TOLERANCE = 0.1
+
 ALPACA_CREDS = {"API_KEY": API_KEY, "API_SECRET": API_SECRET, "PAPER": True}
 
 
 class MLTrader(Strategy):
 
-    def initialize(self, symbol: str = "SPY", cash_at_risk: float = 0.5):
+    def initialize(self, symbol: str = SYMBOL, cash_at_risk: float = CASH_AT_RISK):
         self.symbol = symbol
         self.sleeptime = "24H"
         self.last_trade = None
@@ -55,8 +60,8 @@ class MLTrader(Strategy):
                     quantity,
                     "buy",
                     # order_type="bracket",
-                    take_profit_price=last_price * 1.2,
-                    stop_loss_price=last_price * 0.95,
+                    take_profit_price=last_price * (1 + AVARICE),
+                    stop_loss_price=last_price * (1 - RISK_TOLERANCE),
                 )
                 self.submit_order(order)
                 self.last_trade = "buy"
@@ -68,8 +73,8 @@ class MLTrader(Strategy):
                     quantity,
                     "sell",
                     # order_type="bracket",
-                    take_profit_price=last_price * 0.8,
-                    stop_loss_price=last_price * 1.05,
+                    take_profit_price=last_price * (1 - AVARICE),
+                    stop_loss_price=last_price * (1 + RISK_TOLERANCE),
                 )
                 self.submit_order(order)
                 self.last_trade = "sell"
@@ -81,14 +86,16 @@ end_date = datetime(2023, 12, 31)
 broker = Alpaca(ALPACA_CREDS)
 
 strategy = MLTrader(
-    name="mlstrat", broker=broker, parameters={"symbol": "SPY", "cash_at_risk": 0.5}
+    name="mlstrat",
+    broker=broker,
+    parameters={"symbol": SYMBOL, "cash_at_risk": CASH_AT_RISK},
 )
 
 strategy.backtest(
     YahooDataBacktesting,
     start_date,
     end_date,
-    parameters={"symbol": "SPY", "cash_at_risk": 0.5},
+    parameters={"symbol": SYMBOL, "cash_at_risk": CASH_AT_RISK},
 )
 
 # trader = Trader()
