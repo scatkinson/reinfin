@@ -1,0 +1,10 @@
+api_key: PKCURVNOMTTKV9O3BHYS
+api_secret: 7vhBLuCOyRLnMWFluEWsedjIiNzXL29o7Crbttuc
+base_url: "https://paper-api.alpaca.markets/v2"
+
+start_date: "20231201"
+end_date: "20231231"
+
+cash: 100000
+
+symbol: LUV

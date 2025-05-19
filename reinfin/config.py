@@ -1,5 +1,5 @@
 from abc import ABC
-from soctor import log_wu, util
+from reinfin import log_wu, util
 import logging
 from typing import Callable
 import os
