@@ -7,11 +7,11 @@ from collections import deque
 
 
 class DQN(nn.Module):
-    def __init__(self, input_dim, output_dim):
+    def __init__(self, input_dim, hidden_layer_1_dim=64, hidden_layer_2_dim=32, output_dim):
         super(DQN, self).__init__()
-        self.fc1 = nn.Linear(input_dim, 64)
-        self.fc2 = nn.Linear(64, 32)
-        self.out = nn.Linear(32, output_dim)
+        self.fc1 = nn.Linear(input_dim, hidden_layer_1_dim)
+        self.fc2 = nn.Linear(hidden_layer_1_dim, hidden_layer_2_dim)
+        self.out = nn.Linear(hidden_layer_2_dim, output_dim)
 
     def forward(self, x):
         x = torch.relu(self.fc1(x))
