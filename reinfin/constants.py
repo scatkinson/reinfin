@@ -6,3 +6,7 @@ DATE_FORMAT_STR = "%Y%m%d"
 
 SYMBOL_KEY = "symbol"
 LOOKBACK_KEY = "lookback"
+
+BUY_STR = "buy"
+SELL_STR = "sell"
+HOLD_STR = "hold"

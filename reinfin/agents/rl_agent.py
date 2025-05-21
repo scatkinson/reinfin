@@ -7,7 +7,9 @@ from collections import deque
 
 
 class DQN(nn.Module):
-    def __init__(self, input_dim, hidden_layer_1_dim=64, hidden_layer_2_dim=32, output_dim):
+    def __init__(
+        self, input_dim, output_dim, hidden_layer_1_dim=64, hidden_layer_2_dim=32
+    ):
         super(DQN, self).__init__()
         self.fc1 = nn.Linear(input_dim, hidden_layer_1_dim)
         self.fc2 = nn.Linear(hidden_layer_1_dim, hidden_layer_2_dim)
@@ -15,7 +17,7 @@ class DQN(nn.Module):
 
     def forward(self, x):
         x = torch.relu(self.fc1(x))
-        x = torch.relu(self.fc2(x))
+        x = self.fc2(x)
         return self.out(x)
 
 
