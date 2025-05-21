@@ -8,6 +8,6 @@ base_url: "https://paper-api.alpaca.markets/v2"
 start_date: "2020-01-01"
 end_date: "2023-12-31"
 
-timeframe_str: Hour
+timeframe_str: Day
 
 symbol: SPY

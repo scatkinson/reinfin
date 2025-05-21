@@ -21,4 +21,4 @@ class Extractor:
             end=self.conf.end_date,
         ).df
         logging.info(f"Saving data to {self.conf.save_path}.")
-        barset.to_csv(self.conf.save_path, ignore_index=True)
+        barset.to_csv(self.conf.save_path)
