@@ -1,9 +1,15 @@
 import gym
 from reinfin.agents.philbot import Agent
 from reinfin.util import plot_learning_curve
+from reinfin.environment.environment import Environment
+
+import pandas as pd
+
 
 if __name__ == "__main__":
-    env = gym.make("LunarLander-v2")
+    file = "data/scott-atkinson_20250521_osvC/SPY_2020-01-01_2023-12-31_Day_scott-atkinson_20250521_osvC.csv"
+    df = pd.read_csv(file)
+    env = Environment(df, 0.5)
     agent = Agent(
         gamma=0.99,
         epsilon=1.0,
@@ -37,5 +43,5 @@ if __name__ == "__main__":
             f"episode {i} score {score},\naverage score {avg_score},\nepsilon {agent.epsilon}"
         )
     x = [i + 1 for i in range(n_games)]
-    filename = "/tmp/lunar_lander.png"
+    filename = "/tmp/spy_day_trade.png"
     plot_learning_curve(x, scores, filename)

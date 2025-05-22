@@ -1,7 +1,10 @@
 from gym import Env
 import logging
+from gym.spaces import Discrete, Box
 
 import reinfin.constants as const
+
+import numpy as np
 
 
 class Environment(Env):
@@ -12,7 +15,7 @@ class Environment(Env):
         self.shares_held = 0
         self.net_worth = self.balance
         self.max_steps = len(df) - 1
-        self.action_space = gym.spaces.Discrete(9)
+        self.action_space = Discrete(9)
         self.action_map = {
             0: (const.HOLD_STR, 0),
             1: (const.BUY_STR, 0.25),
@@ -25,9 +28,7 @@ class Environment(Env):
             8: (const.SELL_STR, 1),
         }
         self.cash_at_risk = cash_at_risk
-        self.observation_space = gym.spaces.Box(
-            low=0, high=1, shape=(6,), dtype=np.float32
-        )
+        self.observation_space = Box(low=0, high=1, shape=(6,), dtype=np.float32)
 
     def reset(self):
         self.current_step = 0
@@ -65,7 +66,7 @@ class Environment(Env):
 
     def resolve_action_tuple(self, current_price, pair):
         if pair[0] == const.BUY_STR:
-            share = (self.cash_at_risk * pair[1] * self.balance) / current_price
+            shares = (self.cash_at_risk * pair[1] * self.balance) / current_price
             self.balance -= shares * current_price
             self.shares_held += shares
         elif pair[0] == const.SELL_STR:
