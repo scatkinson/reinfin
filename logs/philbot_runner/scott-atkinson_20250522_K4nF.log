@@ -1,0 +1,52 @@
+2025/05/22 11:14:01 [INFO] Namespace: conf: {'logging_path': 'logs/philbot_runner', 'pipeline_id': None, 'trade_file': 'data/scott-atkinson_20250521_osvC/SPY_2020-01-01_2023-12-31_Day_scott-atkinson_20250521_osvC.csv', 'cash_at_risk': 0.5, 'gamma': 0.99, 'epsilon': 1.0, 'batch_size': 64, 'n_actions': 4, 'eps_min': 0.01, 'input_dims': [6], 'lr': 0.003, 'n_games': 500, 'report_filepath': '/tmp/spy_day_trade.png'}, logging_path: logs/philbot_runner, pipeline_id: scott-atkinson_20250522_K4nF, trade_file: data/scott-atkinson_20250521_osvC/SPY_2020-01-01_2023-12-31_Day_scott-atkinson_20250521_osvC.csv, cash_at_risk: 0.5, gamma: 0.99, epsilon: 1.0, batch_size: 64, n_actions: 4, eps_min: 0.01, input_dims: [6], lr: 0.003, n_games: 500, report_filepath: /tmp/spy_day_trade.png, logfile: logs/philbot_runner/scott-atkinson_20250522_K4nF.log [philbot_runner.py::<module> -- Line 37]
+2025/05/22 11:14:01 [INFO] Running main() of /Users/scott.atkinson/src/reinfin/bin/agents/philbot_runner.py [philbot_runner.py::<module> -- Line 39]
+2025/05/22 11:14:01 [INFO] Log will appear at logs/philbot_runner/scott-atkinson_20250522_K4nF.log [philbot_runner.py::<module> -- Line 40]
+2025/05/22 11:14:01 [INFO] Loading trade_file from data/scott-atkinson_20250521_osvC/SPY_2020-01-01_2023-12-31_Day_scott-atkinson_20250521_osvC.csv. [philbot_runner.py::run_philbot -- Line 17]
+2025/05/22 11:14:01 [INFO] Instantiating Environment for trade_file with cash at risk: 0.5. [philbot_runner.py::run_philbot -- Line 20]
+2025/05/22 11:14:01 [INFO] Instantiating Agent according to config. [philbot_runner.py::run_philbot -- Line 24]
+2025/05/22 11:14:03 [INFO] Running trading game number 0 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:14:05 [INFO] episode 0 score 12225093.971333303,
+average score 12225093.971333303,
+epsilon 0.5290000000000519 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:14:05 [INFO] Running trading game number 1 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:14:08 [INFO] episode 1 score 12242370.943402465,
+average score 12233732.457367884,
+epsilon 0.026500000000054647 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:14:08 [INFO] Running trading game number 2 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:14:11 [INFO] episode 2 score 12234538.077547537,
+average score 12234000.997427769,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:14:11 [INFO] Running trading game number 3 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:14:13 [INFO] episode 3 score 12214856.628698109,
+average score 12229214.905245354,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:14:13 [INFO] Running trading game number 4 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:14:16 [INFO] episode 4 score 12232108.205922915,
+average score 12229793.565380868,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:14:16 [INFO] Running trading game number 5 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:14:19 [INFO] episode 5 score 12230539.270630568,
+average score 12229917.849589149,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:14:19 [INFO] Running trading game number 6 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:14:21 [INFO] episode 6 score 12235974.116150672,
+average score 12230783.03052651,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:14:21 [INFO] Running trading game number 7 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:14:24 [INFO] episode 7 score 12256294.726319132,
+average score 12233971.992500588,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:14:24 [INFO] Running trading game number 8 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:14:27 [INFO] episode 8 score 12239775.10412107,
+average score 12234616.782680642,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:14:27 [INFO] Running trading game number 9 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:14:30 [INFO] episode 9 score 12225368.60556095,
+average score 12233691.964968672,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:14:30 [INFO] Running trading game number 10 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:14:32 [INFO] episode 10 score 12250071.243767008,
+average score 12235180.990313975,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:14:32 [INFO] Running trading game number 11 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:14:34 [INFO] Log available at logs/philbot_runner/scott-atkinson_20250522_K4nF.log [log_wu.py::run_with_logging -- Line 49]

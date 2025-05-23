@@ -1,0 +1,99 @@
+2025/05/22 14:28:21 [INFO] Namespace: conf: {'logging_path': 'logs/philbot_runner', 'pipeline_id': None, 'trade_file': 'data/scott-atkinson_20250521_osvC/SPY_2020-01-01_2023-12-31_Day_scott-atkinson_20250521_osvC.csv', 'cash_at_risk': 0.1, 'gamma': 0.99, 'epsilon': 1.0, 'batch_size': 64, 'n_actions': 4, 'eps_min': 0.01, 'eps_dec': 5e-05, 'input_dims': [6], 'lr': 0.003, 'n_games': 5}, logging_path: logs/philbot_runner, pipeline_id: scott-atkinson_20250522_WOUg, trade_file: data/scott-atkinson_20250521_osvC/SPY_2020-01-01_2023-12-31_Day_scott-atkinson_20250521_osvC.csv, cash_at_risk: 0.1, gamma: 0.99, epsilon: 1.0, batch_size: 64, n_actions: 4, eps_min: 0.01, eps_dec: 5e-05, input_dims: [6], lr: 0.003, n_games: 5, logfile: logs/philbot_runner/scott-atkinson_20250522_WOUg.log, save_directory: images/philbot/scott-atkinson_20250522_WOUg, scores_plot_filename: scores_plot_scott-atkinson_20250522_WOUg.png, scores_plot_path: images/philbot/scott-atkinson_20250522_WOUg/scores_plot_scott-atkinson_20250522_WOUg.png, net_worths_plot_filename: net_worths_plot_scott-atkinson_20250522_WOUg.png, net_worths_plot_path: images/philbot/scott-atkinson_20250522_WOUg/net_worths_plot_scott-atkinson_20250522_WOUg.png, actions_plot_filename: actions_plot_scott-atkinson_20250522_WOUg.png, actions_plot_path: images/philbot/scott-atkinson_20250522_WOUg/actions_plot_scott-atkinson_20250522_WOUg.png [philbot_runner.py::<module> -- Line 37]
+2025/05/22 14:28:21 [INFO] Running main() of /Users/scott.atkinson/src/reinfin/bin/agents/philbot_runner.py [philbot_runner.py::<module> -- Line 39]
+2025/05/22 14:28:21 [INFO] Log will appear at logs/philbot_runner/scott-atkinson_20250522_WOUg.log [philbot_runner.py::<module> -- Line 40]
+2025/05/22 14:28:21 [INFO] Loading trade_file from data/scott-atkinson_20250521_osvC/SPY_2020-01-01_2023-12-31_Day_scott-atkinson_20250521_osvC.csv. [philbot_runner.py::run_philbot -- Line 17]
+2025/05/22 14:28:21 [INFO] Instantiating Environment for trade_file with cash at risk: 0.1. [philbot_runner.py::run_philbot -- Line 20]
+2025/05/22 14:28:21 [INFO] Instantiating Agent according to config. [philbot_runner.py::run_philbot -- Line 24]
+2025/05/22 14:28:22 [INFO] Running trading game number 0 [philbot_runner.py::run_philbot -- Line 39]
+2025/05/22 14:28:22 [INFO] Step: 2, Balance: 10000, Shares: 0, Net Worth: 10000.0 [environment.py::render -- Line 104]
+2025/05/22 14:28:22 [INFO] Purchasing 2.3167454360114914 shares at current price 323.73 for 750.0000000000001 dollars. [environment.py::resolve_action_tuple -- Line 86]
+2025/05/22 14:28:22 [INFO] Step: 3, Balance: 9250.0, Shares: 2.3167454360114914, Net Worth: 10000.0 [environment.py::render -- Line 104]
+2025/05/22 14:28:22 [INFO] Purchasing 2.1495631158207846 shares at current price 322.74 for 693.75 dollars. [environment.py::resolve_action_tuple -- Line 86]
+2025/05/22 14:28:22 [INFO] Step: 5, Balance: 8342.34375, Shares: 5.1256583144856265, Net Worth: 10005.209820385428 [environment.py::render -- Line 104]
+2025/05/22 14:28:22 [INFO] Purchasing 1.9157836469273406 shares at current price 326.59 for 625.6757812500001 dollars. [environment.py::resolve_action_tuple -- Line 86]
+2025/05/22 14:28:22 [INFO] Step: 8, Balance: 7330.8345703125, Shares: 8.218050275750306, Net Worth: 10025.69761673654 [environment.py::render -- Line 104]
+2025/05/22 14:28:22 [INFO] Purchasing 1.67922727009174 shares at current price 327.42 for 549.8125927734376 dollars. [environment.py::resolve_action_tuple -- Line 86]
+2025/05/22 14:28:23 [INFO] Step: 500, Balance: 0.9814253583751923, Shares: 31.548404186143685, Net Worth: 14847.660435357595 [environment.py::render -- Line 104]
+2025/05/22 14:28:23 [INFO] Last reward: 0.006221656339121151. [environment.py::step -- Line 70]
+2025/05/22 14:28:23 [INFO] Last net worth: 14755.854579175915. [environment.py::step -- Line 71]
+2025/05/22 14:28:24 [INFO] Step: 1000, Balance: 0.9814253583751923, Shares: 31.548404186143685, Net Worth: 14773.837169562017 [environment.py::render -- Line 104]
+2025/05/22 14:28:24 [INFO] Last reward: -0.013856391516389038. [environment.py::step -- Line 70]
+2025/05/22 14:28:24 [INFO] Last net worth: 14981.425669106842. [environment.py::step -- Line 71]
+2025/05/22 14:28:24 [INFO] episode 0 score 0.4972117875021133,
+average score 0.4972117875021133,
+epsilon 0.9529000000000052,
+net worth: 15039.790216851208 [philbot_runner.py::run_philbot -- Line 58]
+2025/05/22 14:28:24 [INFO] Running trading game number 1 [philbot_runner.py::run_philbot -- Line 39]
+2025/05/22 14:28:24 [INFO] Step: 6, Balance: 8364.905859375, Shares: 5.045227009884572, Net Worth: 10012.626548533202 [environment.py::render -- Line 104]
+2025/05/22 14:28:24 [INFO] Purchasing 1.9265690316089088 shares at current price 325.64 for 627.367939453125 dollars. [environment.py::resolve_action_tuple -- Line 86]
+2025/05/22 14:28:24 [INFO] Step: 9, Balance: 7350.661023925782, Shares: 8.153388173910846, Net Worth: 10020.24337982767 [environment.py::render -- Line 104]
+2025/05/22 14:28:24 [INFO] Purchasing 1.67997189418099 shares at current price 328.16 for 551.2995767944337 dollars. [environment.py::resolve_action_tuple -- Line 86]
+2025/05/22 14:28:24 [INFO] Step: 12, Balance: 6799.361447131348, Shares: 9.833360068091837, Net Worth: 10064.135323338518 [environment.py::render -- Line 104]
+2025/05/22 14:28:24 [INFO] Purchasing 1.53929218670908 shares at current price 331.29 for 509.95210853485116 dollars. [environment.py::resolve_action_tuple -- Line 86]
+2025/05/22 14:28:26 [INFO] Step: 500, Balance: 0.9741458211412584, Shares: 31.90636291959534, Net Worth: 15016.10853578271 [environment.py::render -- Line 104]
+2025/05/22 14:28:26 [INFO] Last reward: 0.006221664016567177. [environment.py::step -- Line 70]
+2025/05/22 14:28:26 [INFO] Last net worth: 14923.261019686686. [environment.py::step -- Line 71]
+2025/05/22 14:28:27 [INFO] Step: 1000, Balance: 0.9741458211412584, Shares: 31.90636291959534, Net Worth: 14941.447646550856 [environment.py::render -- Line 104]
+2025/05/22 14:28:27 [INFO] Last reward: -0.013856408357553293. [environment.py::step -- Line 70]
+2025/05/22 14:28:27 [INFO] Last net worth: 15151.391514561792. [environment.py::step -- Line 71]
+2025/05/22 14:28:27 [INFO] episode 1 score 0.17027889308174832,
+average score 0.3337453402919308,
+epsilon 0.9026500000000107,
+net worth: 15210.418285963044 [philbot_runner.py::run_philbot -- Line 58]
+2025/05/22 14:28:27 [INFO] Running trading game number 2 [philbot_runner.py::run_philbot -- Line 39]
+2025/05/22 14:28:27 [INFO] Step: 0, Balance: 10000, Shares: 0, Net Worth: 10000 [environment.py::render -- Line 104]
+2025/05/22 14:28:27 [INFO] Purchasing 2.3086157539939056 shares at current price 324.87 for 750.0000000000001 dollars. [environment.py::resolve_action_tuple -- Line 86]
+2025/05/22 14:28:27 [INFO] Step: 11, Balance: 7350.661023925782, Shares: 8.138178427430395, Net Worth: 10043.258738425402 [environment.py::render -- Line 104]
+2025/05/22 14:28:27 [INFO] Purchasing 1.6604908791736206 shares at current price 332.01 for 551.2995767944337 dollars. [environment.py::resolve_action_tuple -- Line 86]
+2025/05/22 14:28:28 [INFO] Step: 500, Balance: 0.9341954739087115, Shares: 31.837204842936146, Net Worth: 14983.52279455966 [environment.py::render -- Line 104]
+2025/05/22 14:28:28 [INFO] Last reward: 0.006221679826290538. [environment.py::step -- Line 70]
+2025/05/22 14:28:28 [INFO] Last net worth: 14890.876528466715. [environment.py::step -- Line 71]
+2025/05/22 14:28:29 [INFO] Step: 1000, Balance: 0.9341954739087115, Shares: 31.837204842936146, Net Worth: 14909.023735227187 [environment.py::render -- Line 104]
+2025/05/22 14:28:29 [INFO] Last reward: -0.013856443037593499. [environment.py::step -- Line 70]
+2025/05/22 14:28:29 [INFO] Last net worth: 15118.512543093708. [environment.py::step -- Line 71]
+2025/05/22 14:28:29 [INFO] episode 2 score 0.16163554396222343,
+average score 0.2763754081820284,
+epsilon 0.8524000000000163,
+net worth: 15177.41137205314 [philbot_runner.py::run_philbot -- Line 58]
+2025/05/22 14:28:29 [INFO] Running trading game number 3 [philbot_runner.py::run_philbot -- Line 39]
+2025/05/22 14:28:29 [INFO] Step: 0, Balance: 10000, Shares: 0, Net Worth: 10000 [environment.py::render -- Line 104]
+2025/05/22 14:28:29 [INFO] Purchasing 2.3086157539939056 shares at current price 324.87 for 750.0000000000001 dollars. [environment.py::resolve_action_tuple -- Line 86]
+2025/05/22 14:28:29 [INFO] Step: 4, Balance: 8353.6171875, Shares: 5.08244649644608, Net Worth: 9993.925969763008 [environment.py::render -- Line 104]
+2025/05/22 14:28:29 [INFO] Purchasing 1.9312042693499167 shares at current price 324.42 for 626.5212890625 dollars. [environment.py::resolve_action_tuple -- Line 86]
+2025/05/22 14:28:31 [INFO] Step: 500, Balance: 0.9947688049057649, Shares: 31.99607960742899, Net Worth: 15058.349832060989 [environment.py::render -- Line 104]
+2025/05/22 14:28:31 [INFO] Last reward: 0.006221656581535319. [environment.py::step -- Line 70]
+2025/05/22 14:28:31 [INFO] Last net worth: 14965.24124040337. [environment.py::step -- Line 71]
+2025/05/22 14:28:33 [INFO] Step: 1000, Balance: 0.9947688049057649, Shares: 31.99607960742899, Net Worth: 14983.479005779604 [environment.py::render -- Line 104]
+2025/05/22 14:28:33 [INFO] Last reward: -0.013856392048146256. [environment.py::step -- Line 70]
+2025/05/22 14:28:33 [INFO] Last net worth: 15194.013209596485. [environment.py::step -- Line 71]
+2025/05/22 14:28:33 [INFO] episode 3 score 0.16564619107813297,
+average score 0.2486931039060545,
+epsilon 0.8021500000000218,
+net worth: 15253.20595687023 [philbot_runner.py::run_philbot -- Line 58]
+2025/05/22 14:28:33 [INFO] Running trading game number 4 [philbot_runner.py::run_philbot -- Line 39]
+2025/05/22 14:28:33 [INFO] Step: 0, Balance: 10000, Shares: 0, Net Worth: 10000 [environment.py::render -- Line 104]
+2025/05/22 14:28:33 [INFO] Purchasing 2.3086157539939056 shares at current price 324.87 for 750.0000000000001 dollars. [environment.py::resolve_action_tuple -- Line 86]
+2025/05/22 14:28:33 [INFO] Step: 6, Balance: 8573.44921875, Shares: 4.393929154643588, Net Worth: 10008.46254136505 [environment.py::render -- Line 104]
+2025/05/22 14:28:33 [INFO] Purchasing 1.9745998384911256 shares at current price 325.64 for 643.0086914062501 dollars. [environment.py::resolve_action_tuple -- Line 86]
+2025/05/22 14:28:33 [INFO] Step: 9, Balance: 7732.179514160156, Shares: 6.97313076546819, Net Worth: 10015.321989389751 [environment.py::render -- Line 104]
+2025/05/22 14:28:33 [INFO] Purchasing 1.767166819728217 shares at current price 328.16 for 579.9134635620118 dollars. [environment.py::resolve_action_tuple -- Line 86]
+2025/05/22 14:28:34 [INFO] Step: 500, Balance: 0.9580819782885388, Shares: 31.656191884958318, Net Worth: 14898.361983039673 [environment.py::render -- Line 104]
+2025/05/22 14:28:34 [INFO] Last reward: 0.006221667557122412. [environment.py::step -- Line 70]
+2025/05/22 14:28:34 [INFO] Last net worth: 14806.242464654444. [environment.py::step -- Line 71]
+2025/05/22 14:28:36 [INFO] Step: 1000, Balance: 0.9580819782885388, Shares: 31.656191884958318, Net Worth: 14824.28649402887 [environment.py::render -- Line 104]
+2025/05/22 14:28:36 [INFO] Last reward: -0.013856416124077854. [environment.py::step -- Line 70]
+2025/05/22 14:28:36 [INFO] Last net worth: 15032.584236631894. [environment.py::step -- Line 71]
+2025/05/22 14:28:36 [INFO] episode 4 score 0.15505231035036096,
+average score 0.2299649451949158,
+epsilon 0.7519000000000273,
+net worth: 15091.148191619068 [philbot_runner.py::run_philbot -- Line 58]
+2025/05/22 14:28:36 [ERROR] plot_curve() missing 1 required positional argument: 'figure_file' [log_wu.py::run_with_logging -- Line 46]
+Traceback (most recent call last):
+  File "/Users/scott.atkinson/src/reinfin/reinfin/log_wu.py", line 44, in run_with_logging
+    fnc(*args)
+  File "/Users/scott.atkinson/src/reinfin/bin/agents/philbot_runner.py", line 29, in main
+    pr.run_philbot()
+  File "/Users/scott.atkinson/src/reinfin/reinfin/agents/philbot_runner.py", line 61, in run_philbot
+    plot_curve(scores, self.conf.scores_plot_path)
+TypeError: plot_curve() missing 1 required positional argument: 'figure_file'
+2025/05/22 14:28:36 [INFO] Log available at logs/philbot_runner/scott-atkinson_20250522_WOUg.log [log_wu.py::run_with_logging -- Line 49]

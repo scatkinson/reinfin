@@ -1,0 +1,30 @@
+2025/05/23 08:59:40 [INFO] Namespace: conf: {'logging_path': 'logs/philbot_runner', 'pipeline_id': None, 'trade_file': 'data/test/spy_test/csv', 'cash_at_risk': 0.1, 'gamma': 0.99, 'epsilon': 1.0, 'batch_size': 64, 'eps_min': 0.01, 'eps_dec': 5e-05, 'input_dims': [6], 'lr': 0.003, 'n_games': 10}, logging_path: logs/philbot_runner, pipeline_id: scott-atkinson_20250523_EV8x, trade_file: data/test/spy_test/csv, cash_at_risk: 0.1, gamma: 0.99, epsilon: 1.0, batch_size: 64, eps_min: 0.01, eps_dec: 5e-05, input_dims: [6], lr: 0.003, n_games: 10, logfile: logs/philbot_runner/scott-atkinson_20250523_EV8x.log, save_directory: images/philbot/scott-atkinson_20250523_EV8x, scores_plot_filename: scores_plot_scott-atkinson_20250523_EV8x.png, scores_plot_path: images/philbot/scott-atkinson_20250523_EV8x/scores_plot_scott-atkinson_20250523_EV8x.png, net_worths_plot_filename: net_worths_plot_scott-atkinson_20250523_EV8x.png, net_worths_plot_path: images/philbot/scott-atkinson_20250523_EV8x/net_worths_plot_scott-atkinson_20250523_EV8x.png, actions_plot_filename: actions_plot_scott-atkinson_20250523_EV8x.png, actions_plot_path: images/philbot/scott-atkinson_20250523_EV8x/actions_plot_scott-atkinson_20250523_EV8x.png [philbot_runner.py::<module> -- Line 37]
+2025/05/23 08:59:40 [INFO] Running main() of /Users/scott.atkinson/src/reinfin/bin/agents/philbot_runner.py [philbot_runner.py::<module> -- Line 39]
+2025/05/23 08:59:40 [INFO] Log will appear at logs/philbot_runner/scott-atkinson_20250523_EV8x.log [philbot_runner.py::<module> -- Line 40]
+2025/05/23 08:59:40 [INFO] Loading trade_file from data/test/spy_test/csv. [philbot_runner.py::run_philbot -- Line 17]
+2025/05/23 08:59:40 [ERROR] [Errno 2] No such file or directory: 'data/test/spy_test/csv' [log_wu.py::run_with_logging -- Line 46]
+Traceback (most recent call last):
+  File "/Users/scott.atkinson/src/reinfin/reinfin/log_wu.py", line 44, in run_with_logging
+    fnc(*args)
+  File "/Users/scott.atkinson/src/reinfin/bin/agents/philbot_runner.py", line 29, in main
+    pr.run_philbot()
+  File "/Users/scott.atkinson/src/reinfin/reinfin/agents/philbot_runner.py", line 19, in run_philbot
+    df = pd.read_csv(file)
+         ^^^^^^^^^^^^^^^^^
+  File "/Users/scott.atkinson/anaconda3/envs/reinfin-env/lib/python3.11/site-packages/pandas/io/parsers/readers.py", line 948, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/scott.atkinson/anaconda3/envs/reinfin-env/lib/python3.11/site-packages/pandas/io/parsers/readers.py", line 611, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/scott.atkinson/anaconda3/envs/reinfin-env/lib/python3.11/site-packages/pandas/io/parsers/readers.py", line 1448, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/scott.atkinson/anaconda3/envs/reinfin-env/lib/python3.11/site-packages/pandas/io/parsers/readers.py", line 1705, in _make_engine
+    self.handles = get_handle(
+                   ^^^^^^^^^^^
+  File "/Users/scott.atkinson/anaconda3/envs/reinfin-env/lib/python3.11/site-packages/pandas/io/common.py", line 863, in get_handle
+    handle = open(
+             ^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'data/test/spy_test/csv'
+2025/05/23 08:59:40 [INFO] Log available at logs/philbot_runner/scott-atkinson_20250523_EV8x.log [log_wu.py::run_with_logging -- Line 49]

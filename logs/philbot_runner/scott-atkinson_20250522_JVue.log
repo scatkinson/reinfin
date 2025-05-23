@@ -1,0 +1,167 @@
+2025/05/22 11:38:50 [INFO] Namespace: conf: {'logging_path': 'logs/philbot_runner', 'pipeline_id': None, 'trade_file': 'data/scott-atkinson_20250521_osvC/SPY_2020-01-01_2023-12-31_Day_scott-atkinson_20250521_osvC.csv', 'cash_at_risk': 0.5, 'gamma': 0.99, 'epsilon': 1.0, 'batch_size': 64, 'n_actions': 4, 'eps_min': 0.01, 'input_dims': [6], 'lr': 0.003, 'n_games': 20, 'report_filepath': 'images/philbot/spy_day_trade.png'}, logging_path: logs/philbot_runner, pipeline_id: scott-atkinson_20250522_JVue, trade_file: data/scott-atkinson_20250521_osvC/SPY_2020-01-01_2023-12-31_Day_scott-atkinson_20250521_osvC.csv, cash_at_risk: 0.5, gamma: 0.99, epsilon: 1.0, batch_size: 64, n_actions: 4, eps_min: 0.01, input_dims: [6], lr: 0.003, n_games: 20, report_filepath: images/philbot/spy_day_trade.png, logfile: logs/philbot_runner/scott-atkinson_20250522_JVue.log [philbot_runner.py::<module> -- Line 37]
+2025/05/22 11:38:50 [INFO] Running main() of /Users/scott.atkinson/src/reinfin/bin/agents/philbot_runner.py [philbot_runner.py::<module> -- Line 39]
+2025/05/22 11:38:50 [INFO] Log will appear at logs/philbot_runner/scott-atkinson_20250522_JVue.log [philbot_runner.py::<module> -- Line 40]
+2025/05/22 11:38:50 [INFO] Loading trade_file from data/scott-atkinson_20250521_osvC/SPY_2020-01-01_2023-12-31_Day_scott-atkinson_20250521_osvC.csv. [philbot_runner.py::run_philbot -- Line 17]
+2025/05/22 11:38:50 [INFO] Instantiating Environment for trade_file with cash at risk: 0.5. [philbot_runner.py::run_philbot -- Line 20]
+2025/05/22 11:38:50 [INFO] Instantiating Agent according to config. [philbot_runner.py::run_philbot -- Line 24]
+2025/05/22 11:38:51 [INFO] Running trading game number 0 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:38:53 [INFO] Step: 500, Balance: 3.660990205670072e-42, Shares: 30.78587733461001, Net Worth: 14487.833873667472 [environment.py::render -- Line 87]
+2025/05/22 11:38:53 [INFO] Last reward: 0.006222070174688494. [environment.py::step -- Line 70]
+2025/05/22 11:38:54 [INFO] Step: 1000, Balance: 3.7103530141527106e-90, Shares: 30.78587733461001, Net Worth: 14415.794920704482 [environment.py::render -- Line 87]
+2025/05/22 11:38:54 [INFO] Last reward: -0.013857299300817137. [environment.py::step -- Line 70]
+2025/05/22 11:38:54 [INFO] episode 0 score 0.4825918558814867,
+average score 0.4825918558814867,
+epsilon 0.5290000000000519 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:38:54 [INFO] Running trading game number 1 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:38:55 [INFO] Step: 500, Balance: 7.604601928802866e-45, Shares: 30.774787182213533, Net Worth: 14482.61484794969 [environment.py::render -- Line 87]
+2025/05/22 11:38:55 [INFO] Last reward: 0.006222070174688428. [environment.py::step -- Line 70]
+2025/05/22 11:38:56 [INFO] Step: 1000, Balance: 2.1945519406746645e-98, Shares: 30.774787182213533, Net Worth: 14410.601845943309 [environment.py::render -- Line 87]
+2025/05/22 11:38:56 [INFO] Last reward: -0.013857299300817036. [environment.py::step -- Line 70]
+2025/05/22 11:38:56 [INFO] episode 1 score 0.16362746845655457,
+average score 0.3231096621690206,
+epsilon 0.026500000000054647 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:38:56 [INFO] Running trading game number 2 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:38:57 [INFO] Step: 500, Balance: 1.3214328515890286e-48, Shares: 30.81385123876582, Net Worth: 14500.998392963196 [environment.py::render -- Line 87]
+2025/05/22 11:38:57 [INFO] Last reward: 0.006222070174688469. [environment.py::step -- Line 70]
+2025/05/22 11:38:59 [INFO] Step: 1000, Balance: 5.384607988242339e-97, Shares: 30.81385123876582, Net Worth: 14428.893981064482 [environment.py::render -- Line 87]
+2025/05/22 11:38:59 [INFO] Last reward: -0.01385729930081714. [environment.py::step -- Line 70]
+2025/05/22 11:38:59 [INFO] episode 2 score 0.16517867452460497,
+average score 0.2704659996208821,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:38:59 [INFO] Running trading game number 3 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:00 [INFO] Step: 500, Balance: 1.938999576328751e-48, Shares: 30.77634660759714, Net Worth: 14483.348713535215 [environment.py::render -- Line 87]
+2025/05/22 11:39:00 [INFO] Last reward: 0.006222070174688365. [environment.py::step -- Line 70]
+2025/05/22 11:39:01 [INFO] Step: 1000, Balance: 2.993601570263882e-99, Shares: 30.77634660759714, Net Worth: 14411.332062473437 [environment.py::render -- Line 87]
+2025/05/22 11:39:01 [INFO] Last reward: -0.013857299300817043. [environment.py::step -- Line 70]
+2025/05/22 11:39:01 [INFO] episode 3 score 0.16306919979076503,
+average score 0.2436167996633528,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:01 [INFO] Running trading game number 4 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:03 [INFO] Step: 500, Balance: 6.564732563469473e-44, Shares: 30.31552565576968, Net Worth: 14266.486373605212 [environment.py::render -- Line 87]
+2025/05/22 11:39:03 [INFO] Last reward: 0.0062220701746883746. [environment.py::step -- Line 70]
+2025/05/22 11:39:04 [INFO] Step: 1000, Balance: 8.121318623479851e-98, Shares: 30.31552565576968, Net Worth: 14195.54804357071 [environment.py::render -- Line 87]
+2025/05/22 11:39:04 [INFO] Last reward: -0.013857299300817024. [environment.py::step -- Line 70]
+2025/05/22 11:39:04 [INFO] episode 4 score 0.148679002711562,
+average score 0.22462924027299466,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:04 [INFO] Running trading game number 5 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:05 [INFO] Step: 500, Balance: 2.0603875259003726e-46, Shares: 30.609110077859814, Net Worth: 14404.647202640828 [environment.py::render -- Line 87]
+2025/05/22 11:39:05 [INFO] Last reward: 0.006222070174688374. [environment.py::step -- Line 70]
+2025/05/22 11:39:07 [INFO] Step: 1000, Balance: 3.450088133720171e-94, Shares: 30.609110077859814, Net Worth: 14333.021885058637 [environment.py::render -- Line 87]
+2025/05/22 11:39:07 [INFO] Last reward: -0.013857299300816977. [environment.py::step -- Line 70]
+2025/05/22 11:39:07 [INFO] episode 5 score 0.1687900828269525,
+average score 0.21532271403198763,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:07 [INFO] Running trading game number 6 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:08 [INFO] Step: 500, Balance: 3.3036046003851313e-47, Shares: 30.769936254824977, Net Worth: 14480.332001520635 [environment.py::render -- Line 87]
+2025/05/22 11:39:08 [INFO] Last reward: 0.0062220701746885185. [environment.py::step -- Line 70]
+2025/05/22 11:39:09 [INFO] Step: 1000, Balance: 4.554785852250947e-98, Shares: 30.769936254824977, Net Worth: 14408.330350684344 [environment.py::render -- Line 87]
+2025/05/22 11:39:09 [INFO] Last reward: -0.013857299300817. [environment.py::step -- Line 70]
+2025/05/22 11:39:09 [INFO] episode 6 score 0.16742537489422152,
+average score 0.20848023701230675,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:09 [INFO] Running trading game number 7 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:11 [INFO] Step: 500, Balance: 1.0582188656711121e-49, Shares: 30.78278375397304, Net Worth: 14486.378034619713 [environment.py::render -- Line 87]
+2025/05/22 11:39:11 [INFO] Last reward: 0.006222070174688372. [environment.py::step -- Line 70]
+2025/05/22 11:39:12 [INFO] Step: 1000, Balance: 1.308239250551477e-103, Shares: 30.78278375397304, Net Worth: 14414.346320635415 [environment.py::render -- Line 87]
+2025/05/22 11:39:12 [INFO] Last reward: -0.013857299300817033. [environment.py::step -- Line 70]
+2025/05/22 11:39:12 [INFO] episode 7 score 0.16425464118000702,
+average score 0.2029520375332693,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:12 [INFO] Running trading game number 8 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:13 [INFO] Step: 500, Balance: 9.368485649558858e-49, Shares: 30.75670535655422, Net Worth: 14474.105540794417 [environment.py::render -- Line 87]
+2025/05/22 11:39:13 [INFO] Last reward: 0.006222070174688349. [environment.py::step -- Line 70]
+2025/05/22 11:39:15 [INFO] Step: 1000, Balance: 3.356235555824961e-100, Shares: 30.75670535655422, Net Worth: 14402.13485026008 [environment.py::render -- Line 87]
+2025/05/22 11:39:15 [INFO] Last reward: -0.013857299300817036. [environment.py::step -- Line 70]
+2025/05/22 11:39:15 [INFO] episode 8 score 0.16313250072028598,
+average score 0.19852764455404892,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:15 [INFO] Running trading game number 9 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:16 [INFO] Step: 500, Balance: 2.0013385642235445e-47, Shares: 30.85719526505485, Net Worth: 14521.396091734814 [environment.py::render -- Line 87]
+2025/05/22 11:39:16 [INFO] Last reward: 0.006222070174688387. [environment.py::step -- Line 70]
+2025/05/22 11:39:17 [INFO] Step: 1000, Balance: 4.4567986430110126e-97, Shares: 30.85719526505485, Net Worth: 14449.190254814584 [environment.py::render -- Line 87]
+2025/05/22 11:39:17 [INFO] Last reward: -0.01385729930081713. [environment.py::step -- Line 70]
+2025/05/22 11:39:17 [INFO] episode 9 score 0.16698213223496625,
+average score 0.19537309332214065,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:17 [INFO] Running trading game number 10 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:19 [INFO] Step: 500, Balance: 1.2401174149120002e-46, Shares: 30.789206936350144, Net Worth: 14489.400784246378 [environment.py::render -- Line 87]
+2025/05/22 11:39:19 [INFO] Last reward: 0.0062220701746883164. [environment.py::step -- Line 70]
+2025/05/22 11:39:20 [INFO] Step: 1000, Balance: 9.583572213170491e-92, Shares: 30.789206936350144, Net Worth: 14417.354040015318 [environment.py::render -- Line 87]
+2025/05/22 11:39:20 [INFO] Last reward: -0.013857299300817152. [environment.py::step -- Line 70]
+2025/05/22 11:39:20 [INFO] episode 10 score 0.16255667063389964,
+average score 0.19238978216866418,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:20 [INFO] Running trading game number 11 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:22 [INFO] Step: 500, Balance: 1.600404016372014e-47, Shares: 30.896622286607496, Net Worth: 14539.950448077489 [environment.py::render -- Line 87]
+2025/05/22 11:39:22 [INFO] Last reward: 0.006222070174688449. [environment.py::step -- Line 70]
+2025/05/22 11:39:23 [INFO] Step: 1000, Balance: 1.2935307414953512e-96, Shares: 30.896622286607496, Net Worth: 14467.652351926825 [environment.py::render -- Line 87]
+2025/05/22 11:39:23 [INFO] Last reward: -0.013857299300817085. [environment.py::step -- Line 70]
+2025/05/22 11:39:23 [INFO] episode 11 score 0.16755464245948387,
+average score 0.19032018719289914,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:23 [INFO] Running trading game number 12 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:25 [INFO] Step: 500, Balance: 3.5900614768689825e-43, Shares: 30.7752860557431, Net Worth: 14482.849617832702 [environment.py::render -- Line 87]
+2025/05/22 11:39:25 [INFO] Last reward: 0.006222070174688336. [environment.py::step -- Line 70]
+2025/05/22 11:39:26 [INFO] Step: 1000, Balance: 4.509262035417964e-92, Shares: 30.7752860557431, Net Worth: 14410.835448462263 [environment.py::render -- Line 87]
+2025/05/22 11:39:26 [INFO] Last reward: -0.013857299300817019. [environment.py::step -- Line 70]
+2025/05/22 11:39:26 [INFO] episode 12 score 0.16120916704807695,
+average score 0.18808087795098977,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:26 [INFO] Running trading game number 13 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:28 [INFO] Step: 500, Balance: 5.468512143801703e-44, Shares: 30.695528180832866, Net Worth: 14445.315561899948 [environment.py::render -- Line 87]
+2025/05/22 11:39:28 [INFO] Last reward: 0.006222070174688411. [environment.py::step -- Line 70]
+2025/05/22 11:39:29 [INFO] Step: 1000, Balance: 8.368512148228951e-91, Shares: 30.695528180832866, Net Worth: 14373.488025956798 [environment.py::render -- Line 87]
+2025/05/22 11:39:29 [INFO] Last reward: -0.013857299300817014. [environment.py::step -- Line 70]
+2025/05/22 11:39:29 [INFO] episode 13 score 0.16122983484979814,
+average score 0.18616294630090466,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:29 [INFO] Running trading game number 14 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:31 [INFO] Step: 500, Balance: 4.99615506340211e-46, Shares: 30.6630748211133, Net Worth: 14430.04301081592 [environment.py::render -- Line 87]
+2025/05/22 11:39:31 [INFO] Last reward: 0.006222070174688328. [environment.py::step -- Line 70]
+2025/05/22 11:39:32 [INFO] Step: 1000, Balance: 4.435940810610317e-93, Shares: 30.6630748211133, Net Worth: 14358.291415734515 [environment.py::render -- Line 87]
+2025/05/22 11:39:32 [INFO] Last reward: -0.013857299300817022. [environment.py::step -- Line 70]
+2025/05/22 11:39:32 [INFO] episode 14 score 0.16198222598750486,
+average score 0.18455089828001134,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:32 [INFO] Running trading game number 15 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:33 [INFO] Step: 500, Balance: 3.0041651644279657e-44, Shares: 30.822181371139912, Net Worth: 14504.918553258443 [environment.py::render -- Line 87]
+2025/05/22 11:39:33 [INFO] Last reward: 0.006222070174688462. [environment.py::step -- Line 70]
+2025/05/22 11:39:35 [INFO] Step: 1000, Balance: 1.1640905936477516e-91, Shares: 30.822181371139912, Net Worth: 14432.794648849975 [environment.py::render -- Line 87]
+2025/05/22 11:39:35 [INFO] Last reward: -0.013857299300817081. [environment.py::step -- Line 70]
+2025/05/22 11:39:35 [INFO] episode 15 score 0.16789086897136368,
+average score 0.18350964644822088,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:35 [INFO] Running trading game number 16 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:36 [INFO] Step: 500, Balance: 1.1963253277010913e-43, Shares: 30.834154910122663, Net Worth: 14510.553300703727 [environment.py::render -- Line 87]
+2025/05/22 11:39:36 [INFO] Last reward: 0.0062220701746883884. [environment.py::step -- Line 70]
+2025/05/22 11:39:40 [INFO] Step: 1000, Balance: 1.6949876569232548e-94, Shares: 30.834154910122663, Net Worth: 14438.401378214037 [environment.py::render -- Line 87]
+2025/05/22 11:39:40 [INFO] Last reward: -0.013857299300817172. [environment.py::step -- Line 70]
+2025/05/22 11:39:40 [INFO] episode 16 score 0.16475240927452317,
+average score 0.18240627955565042,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:40 [INFO] Running trading game number 17 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:43 [INFO] Step: 500, Balance: 6.100464200757699e-47, Shares: 30.548055467169377, Net Worth: 14375.914902849909 [environment.py::render -- Line 87]
+2025/05/22 11:39:43 [INFO] Last reward: 0.006222070174688368. [environment.py::step -- Line 70]
+2025/05/22 11:39:46 [INFO] Step: 1000, Balance: 9.409268341666778e-92, Shares: 30.548055467169377, Net Worth: 14304.432453056732 [environment.py::render -- Line 87]
+2025/05/22 11:39:46 [INFO] Last reward: -0.013857299300817055. [environment.py::step -- Line 70]
+2025/05/22 11:39:46 [INFO] episode 17 score 0.15510957471636644,
+average score 0.180889795953468,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:46 [INFO] Running trading game number 18 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:49 [INFO] Step: 500, Balance: 5.632433671703659e-43, Shares: 30.825564933259862, Net Worth: 14506.510857592091 [environment.py::render -- Line 87]
+2025/05/22 11:39:49 [INFO] Last reward: 0.0062220701746883295. [environment.py::step -- Line 70]
+2025/05/22 11:39:50 [INFO] Step: 1000, Balance: 3.291518872556829e-90, Shares: 30.825564933259862, Net Worth: 14434.379035648262 [environment.py::render -- Line 87]
+2025/05/22 11:39:50 [INFO] Last reward: -0.013857299300817097. [environment.py::step -- Line 70]
+2025/05/22 11:39:50 [INFO] episode 18 score 0.17059349244652136,
+average score 0.18034788524257606,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:50 [INFO] Running trading game number 19 [philbot_runner.py::run_philbot -- Line 38]
+2025/05/22 11:39:51 [INFO] Step: 500, Balance: 3.7043641358839773e-45, Shares: 30.739916325080546, Net Worth: 14466.204622582905 [environment.py::render -- Line 87]
+2025/05/22 11:39:51 [INFO] Last reward: 0.00622207017468835. [environment.py::step -- Line 70]
+2025/05/22 11:39:53 [INFO] Step: 1000, Balance: 3.6160260075136853e-93, Shares: 30.739916325080546, Net Worth: 14394.273218382217 [environment.py::render -- Line 87]
+2025/05/22 11:39:53 [INFO] Last reward: -0.013857299300817071. [environment.py::step -- Line 70]
+2025/05/22 11:39:53 [INFO] episode 19 score 0.16162078589670933,
+average score 0.17941153027528273,
+epsilon 0.01 [philbot_runner.py::run_philbot -- Line 55]
+2025/05/22 11:39:53 [INFO] Log available at logs/philbot_runner/scott-atkinson_20250522_JVue.log [log_wu.py::run_with_logging -- Line 49]
