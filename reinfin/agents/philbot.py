@@ -9,7 +9,9 @@ class DeepQNetwork(nn.Module):
     def __init__(self, lr, input_dims, fc1_dims, fc2_dims, n_actions):
         super().__init__()
         self.lr = lr
-        self.input_dims = input_dims
+        self.input_dims = (
+            input_dims  # TODO allow multiple recent days to be included as input
+        )
         self.fc1_dims = fc1_dims
         self.fc2_dims = fc2_dims
         self.n_actions = n_actions

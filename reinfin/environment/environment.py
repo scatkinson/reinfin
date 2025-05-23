@@ -81,22 +81,22 @@ class Environment(Env):
             if self.balance < 1:
                 return
             shares = (self.cash_at_risk * pair[1] * self.balance) / current_price
-            if shares * current_price >= const.LOGGING_THRESHOLD:
-                self.render()
-                logging.info(
-                    f"Purchasing {shares} shares at current price {current_price} for {shares * current_price} dollars."
-                )
+            # if shares * current_price >= const.LOGGING_THRESHOLD:
+            #     self.render()
+            #     logging.info(
+            #         f"Purchasing {shares} shares at current price {current_price} for {shares * current_price} dollars."
+            #     )
             self.balance -= shares * current_price
             self.shares_held += shares
         elif pair[0] == const.SELL_STR:
             shares_sold = self.shares_held * (-1) * pair[1]
             self.balance += shares_sold * current_price
             self.shares_held -= shares_sold
-            if shares_sold * current_price >= const.LOGGING_THRESHOLD:
-                self.render()
-                logging.info(
-                    f"Selling {shares_sold} at current price {current_price} for {shares_sold*current_price} dollars."
-                )
+            # if shares_sold * current_price >= const.LOGGING_THRESHOLD:
+            #     self.render()
+            #     logging.info(
+            #         f"Selling {shares_sold} at current price {current_price} for {shares_sold*current_price} dollars."
+            #     )
         else:
             return
 
