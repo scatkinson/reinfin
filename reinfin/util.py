@@ -287,3 +287,10 @@ def plot_learning_curve(x, scores, figure_file):
     plt.plot(x, running_avg)
     plt.title("Running average of previous 100 episodes")
     plt.savefig(figure_file)
+
+
+def plot_curve(scores, figure_file):
+    plt.clf()
+    x = [i + 1 for i in range(len(scores))]
+    plt.plot(x, scores)
+    plt.savefig(figure_file)

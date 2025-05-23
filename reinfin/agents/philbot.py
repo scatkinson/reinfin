@@ -85,6 +85,7 @@ class Agent:
     def choose_action(self, observation):
         if np.random.random() > self.epsilon:
             state = T.tensor([observation]).to(self.Q_eval.device)
+            state = state.to(dtype=T.float32)
             actions = self.Q_eval.forward(state)
             action = T.argmax(actions).item()
         else:
@@ -111,7 +112,7 @@ class Agent:
 
         action_batch = self.action_memory[batch]
 
-        q_eval = self.Q_eval.forward(state_batch)[batch_action, action_batch]
+        q_eval = self.Q_eval.forward(state_batch)[batch_index, action_batch]
         q_next = self.Q_eval.forward(new_state_batch)
         q_next[terminal_batch] = 0.0
 
