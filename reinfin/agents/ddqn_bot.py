@@ -13,9 +13,12 @@ class ReplayBuffer:
     def __init__(self, max_size, input_shape):
         self.mem_size = max_size
         self.mem_cntr = 0
-        self.state_memory = np.zeros((self.mem_size, *input_shape), dtype=np.float32)
+        self.input_shape = input_shape
+        self.state_memory = np.zeros(
+            (self.mem_size, np.prod(input_shape)), dtype=np.float32
+        )
         self.new_state_memory = np.zeros(
-            (self.mem_size, *input_shape), dtype=np.float32
+            (self.mem_size, np.prod(input_shape)), dtype=np.float32
         )
         self.action_memory = np.zeros(self.mem_size, dtype=np.int64)
         self.reward_memory = np.zeros(self.mem_size, dtype=np.float32)
@@ -46,16 +49,16 @@ class ReplayBuffer:
 
 class DuelingDeepQNetwork(nn.Module):
 
-    def __init__(self, lr, n_actions, name, input_dims, chkpt_dir):
+    def __init__(self, lr, n_actions, name, input_dims, chkpt_dir, hid_out_dims=512):
         super().__init__()
         self.chkpt_dir = chkpt_dir
         self.checkpoint_file = os.path.join(self.chkpt_dir, name)
 
-        self.fc1 = nn.Linear(*input_dims, 512)
+        self.fc1 = nn.Linear(in_features=input_dims, out_features=hid_out_dims)
         # value stream
-        self.V = nn.Linear(512, 1)
+        self.V = nn.Linear(in_features=hid_out_dims, out_features=1)
         # advantage function
-        self.A = nn.Linear(512, n_actions)
+        self.A = nn.Linear(in_features=512, out_features=n_actions)
 
         self.optimizer = optim.Adam(self.parameters(), lr=lr)
         self.loss = nn.MSELoss()
@@ -98,6 +101,7 @@ class Agent:
         self.lr = lr
         self.n_actions = n_actions
         self.input_dims = input_dims
+        self.n_features = np.prod(input_dims)
         self.batch_size = batch_size
         self.eps_min = eps_min
         self.eps_dec = eps_dec
@@ -111,7 +115,7 @@ class Agent:
         self.q_eval = DuelingDeepQNetwork(
             self.lr,
             self.n_actions,
-            input_dims=self.input_dims,
+            input_dims=self.n_features,
             name="trading_ddqn_q_eval",
             chkpt_dir=self.chkpt_dir,
         )
@@ -119,7 +123,7 @@ class Agent:
         self.q_next = DuelingDeepQNetwork(
             self.lr,
             self.n_actions,
-            input_dims=self.input_dims,
+            input_dims=self.n_features,
             name="trading_ddqn_q_next",
             chkpt_dir=self.chkpt_dir,
         )

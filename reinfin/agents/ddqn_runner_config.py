@@ -24,7 +24,7 @@ class DDQNRunnerConfig(Config):
     batch_size: int
     eps_min: float
     eps_dec: float
-    input_dims: int
+    n_features: int
     lr: float
     replace_cnt: int
 
@@ -82,7 +82,7 @@ class DDQNRunnerConfig(Config):
             "batch_size": int,
             "eps_min": float,
             "eps_dec": float,
-            "input_dims": list,
+            "n_features": int,
             "lr": float,
             "replace_cnt": int,
             "load_checkpoint": self.is_a(bool),

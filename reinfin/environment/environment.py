@@ -5,10 +5,11 @@ from gym.spaces import Discrete, Box
 import reinfin.constants as const
 
 import numpy as np
+import pandas as pd
 
 
 class Environment(Env):
-    def __init__(self, df, cash_at_risk):
+    def __init__(self, df, cash_at_risk, lookback):
         self.df = df.reset_index(drop=True)
         self.current_step = 0
         self.balance = 10000
@@ -29,8 +30,10 @@ class Environment(Env):
             8: (const.SELL_STR, -1),
         }
         self.cash_at_risk = cash_at_risk
+        self.lookback = lookback
         self.observation_space = Box(low=0, high=1, shape=(6,), dtype=np.float32)
         self.action_memory = []
+        self.shares_held_memory = np.zeros(len(self.df), dtype=np.float32)
 
     def reset(self):
         self.current_step = 0
@@ -41,23 +44,44 @@ class Environment(Env):
         return self._next_observation()
 
     def _next_observation(self):
-        row = self.df.iloc[self.current_step]
+        if self.current_step >= self.lookback:
+            rows = self.df.iloc[
+                self.current_step + 1 - self.lookback : self.current_step + 1
+            ]
+            shares_held = self.shares_held_memory[
+                self.current_step + 1 - self.lookback : self.current_step + 1
+            ]
+        else:
+            rows = self.df.iloc[: self.current_step + 1]
+            row_pad = self.df.iloc[[self.current_step]]
+            row_pad_list = [row_pad] * (self.lookback - (self.current_step + 1))
+            rows = pd.concat([rows] + row_pad_list, axis=0)
+
+            shares_held = self.shares_held_memory[: self.current_step + 1]
+            shares_held = np.pad(
+                shares_held,
+                (0, self.lookback - (self.current_step + 1)),
+                constant_values=shares_held[self.current_step],
+            )
         obs = np.array(
             [
-                row["open"],
-                row["high"],
-                row["low"],
-                row["close"],
-                row["volume"],
-                self.shares_held,
+                rows["open"].to_numpy(),
+                rows["high"].to_numpy(),
+                rows["low"].to_numpy(),
+                rows["close"].to_numpy(),
+                rows["volume"].to_numpy(),
+                shares_held,
             ]
         )
-        return obs / np.max(obs)  # Normalize
+        obs = obs.transpose().flatten()
+        # return obs / np.max(obs)  # Normalize
+        return obs
 
     def step(self, action):
         current_price = self.df.iloc[self.current_step]["close"]
 
         self.resolve_action_tuple(current_price, self.action_map[action])
+        self.shares_held_memory[self.current_step] = self.shares_held
 
         self.net_worth = self.balance + self.shares_held * current_price
         reward = (self.net_worth - self.last_net_worth) / self.last_net_worth

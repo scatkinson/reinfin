@@ -5,7 +5,9 @@ seed: 2
 
 trade_file: "data/test/spy_test.csv"
 
-cash_at_risk: 0.75
+cash_at_risk: 0.85
+
+lookback: 30
 
 # gamma controls how much previous rounds influence reward
 gamma: 0.99
@@ -13,10 +15,10 @@ epsilon: 1.0
 batch_size: 64
 eps_min: 0.01
 eps_dec: 0.0005
-input_dims: [6]
+n_features: 6
 lr: 0.001
 replace_cnt: 100
 
 load_checkpoint: False
 
-n_games: 1000
+n_games: 5

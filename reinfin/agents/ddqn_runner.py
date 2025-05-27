@@ -22,7 +22,7 @@ class DDQNRunner:
         logging.info(
             f"Instantiating Environment for trade_file with cash at risk: {self.conf.cash_at_risk}."
         )
-        env = Environment(df, self.conf.cash_at_risk)
+        env = Environment(df, self.conf.cash_at_risk, self.conf.lookback)
         logging.info(f"Instantiating Agent according to config.")
         agent = Agent(
             gamma=self.conf.gamma,
@@ -31,7 +31,7 @@ class DDQNRunner:
             n_actions=len(env.action_map),
             eps_min=self.conf.eps_min,
             eps_dec=self.conf.eps_dec,
-            input_dims=self.conf.input_dims,
+            input_dims=[self.conf.lookback, self.conf.n_features],
             lr=self.conf.lr,
             replace=self.conf.replace_cnt,
         )
