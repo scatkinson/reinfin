@@ -1,0 +1,12 @@
+API_KEY_KEY = "API_KEY"
+API_SECRET_KEY = "API_SECRET"
+BASE_URL_KEY = "BASE_URL"
+
+DATE_FORMAT_STR = "%Y%m%d"
+
+SYMBOL_KEY = "symbol"
+LOOKBACK_KEY = "lookback"
+
+BUY_STR = "buy"
+SELL_STR = "sell"
+HOLD_STR = "hold"
