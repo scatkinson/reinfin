@@ -2,3 +2,5 @@
 *.json
 *.html
 *.pyc
+*.log
+*.png
