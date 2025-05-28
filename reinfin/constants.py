@@ -10,3 +10,5 @@ LOOKBACK_KEY = "lookback"
 BUY_STR = "buy"
 SELL_STR = "sell"
 HOLD_STR = "hold"
+
+LOGGING_THRESHOLD = 1000
