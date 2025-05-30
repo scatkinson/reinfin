@@ -32,40 +32,56 @@ class DDQNRunnerConfig(Config):
 
     n_games: int
 
+    save_model: bool
+
     def __init__(self, config):
         super().__init__(config)
-        self.save_directory = getattr(
+        self.image_save_directory = getattr(
             self,
             "save_directory",
-            f"images/philbot/{self.pipeline_id}",
+            f"images/ddqn/{self.pipeline_id}",
+        )
+        self.model_save_directory = getattr(
+            self,
+            "save_directory",
+            f"model/ddqn/{self.pipeline_id}",
         )
         # If save path doesn't already exist, create the directory (needed to make new pipeline-named directories)
-        if not os.path.exists(self.save_directory):
-            os.makedirs(self.save_directory, exist_ok=True)
+        if not os.path.exists(self.image_save_directory):
+            os.makedirs(self.image_save_directory, exist_ok=True)
+            os.makedirs(self.model_save_directory, exist_ok=True)
 
         self.scores_plot_filename = f"scores_plot_{self.pipeline_id}.png"
         self.scores_plot_path = os.path.join(
-            self.save_directory, self.scores_plot_filename
+            self.image_save_directory, self.scores_plot_filename
         )
         self.net_worths_plot_filename = f"net_worths_plot_{self.pipeline_id}.png"
         self.net_worths_plot_path = os.path.join(
-            self.save_directory, self.net_worths_plot_filename
+            self.image_save_directory, self.net_worths_plot_filename
         )
         self.scores_learning_plot_filename = (
             f"scores_learning_plot_{self.pipeline_id}.png"
         )
         self.scores_learning_plot_path = os.path.join(
-            self.save_directory, self.scores_learning_plot_filename
+            self.image_save_directory, self.scores_learning_plot_filename
         )
         self.net_worths_learning_plot_filename = (
             f"net_worths_learning_plot_{self.pipeline_id}.png"
         )
         self.net_worths_learning_plot_path = os.path.join(
-            self.save_directory, self.net_worths_learning_plot_filename
+            self.image_save_directory, self.net_worths_learning_plot_filename
         )
         self.actions_plot_filename = f"actions_plot_{self.pipeline_id}.png"
         self.actions_plot_path = os.path.join(
-            self.save_directory, self.actions_plot_filename
+            self.image_save_directory, self.actions_plot_filename
+        )
+        self.q_eval_model_filename = f"q_eval_model_{self.pipeline_id}.pt"
+        self.q_eval_model_path = os.path.join(
+            self.model_save_directory, self.q_eval_model_filename
+        )
+        self.q_next_model_filename = f"q_next_model_{self.pipeline_id}.pt"
+        self.q_next_model_path = os.path.join(
+            self.model_save_directory, self.q_next_model_filename
         )
 
     @property
@@ -87,4 +103,5 @@ class DDQNRunnerConfig(Config):
             "replace_cnt": int,
             "load_checkpoint": self.is_a(bool),
             "n_games": int,
+            "save_model": bool,
         }

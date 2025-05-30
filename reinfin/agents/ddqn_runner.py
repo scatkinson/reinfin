@@ -6,6 +6,7 @@ from reinfin.agents import DDQNRunnerConfig
 import pandas as pd
 import numpy as np
 import logging
+import torch as T
 
 
 class DDQNRunner:
@@ -76,3 +77,9 @@ class DDQNRunner:
         ]
 
         plot_curve(avg_actions, self.conf.actions_plot_path)
+
+        if self.conf.save_model:
+            logging.info(f"Saving agent.q_eval model at {self.conf.q_eval_model_path}")
+            T.save(agent.q_eval, self.conf.q_eval_model_path)
+            logging.info(f"Saving agent.q_next model at {self.conf.q_next_model_path}")
+            T.save(agent.q_next, self.conf.q_next_model_path)

@@ -22,3 +22,5 @@ replace_cnt: 100
 load_checkpoint: False
 
 n_games: 5
+
+save_model: True
