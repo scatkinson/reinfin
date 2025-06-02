@@ -5,6 +5,7 @@ seed: 2
 
 trade_file: "data/test/spy_test.csv"
 
+start_balance: 10000
 cash_at_risk: 0.85
 
 lookback: 30
@@ -19,6 +20,7 @@ n_features: 6
 lr: 0.001
 replace_cnt: 100
 
+# if loading a checkpoint, the previous run's pipeline_id must be provided
 load_checkpoint: False
 
 n_games: 5

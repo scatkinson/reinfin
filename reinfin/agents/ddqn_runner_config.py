@@ -12,8 +12,10 @@ class DDQNRunnerConfig(Config):
 
     seed: int
 
-    trade_file: str
+    train_file: str
+    eval_file: str
 
+    start_balance: int
     cash_at_risk: float
 
     # how many time units in the past (including current time unit) to consider
@@ -51,30 +53,48 @@ class DDQNRunnerConfig(Config):
             os.makedirs(self.image_save_directory, exist_ok=True)
             os.makedirs(self.model_save_directory, exist_ok=True)
 
-        self.scores_plot_filename = f"scores_plot_{self.pipeline_id}.png"
-        self.scores_plot_path = os.path.join(
-            self.image_save_directory, self.scores_plot_filename
+        self.train_scores_plot_filename = f"train_scores_plot_{self.pipeline_id}.png"
+        self.train_scores_plot_path = os.path.join(
+            self.image_save_directory, self.train_scores_plot_filename
         )
-        self.net_worths_plot_filename = f"net_worths_plot_{self.pipeline_id}.png"
-        self.net_worths_plot_path = os.path.join(
-            self.image_save_directory, self.net_worths_plot_filename
+        self.train_net_worths_plot_filename = (
+            f"train_net_worths_plot_{self.pipeline_id}.png"
         )
-        self.scores_learning_plot_filename = (
-            f"scores_learning_plot_{self.pipeline_id}.png"
+        self.train_net_worths_plot_path = os.path.join(
+            self.image_save_directory, self.train_net_worths_plot_filename
         )
-        self.scores_learning_plot_path = os.path.join(
-            self.image_save_directory, self.scores_learning_plot_filename
+        self.train_scores_learning_plot_filename = (
+            f"train_scores_learning_plot_{self.pipeline_id}.png"
         )
-        self.net_worths_learning_plot_filename = (
-            f"net_worths_learning_plot_{self.pipeline_id}.png"
+        self.train_scores_learning_plot_path = os.path.join(
+            self.image_save_directory, self.train_scores_learning_plot_filename
         )
-        self.net_worths_learning_plot_path = os.path.join(
-            self.image_save_directory, self.net_worths_learning_plot_filename
+        self.train_net_worths_learning_plot_filename = (
+            f"train_net_worths_learning_plot_{self.pipeline_id}.png"
         )
-        self.actions_plot_filename = f"actions_plot_{self.pipeline_id}.png"
-        self.actions_plot_path = os.path.join(
-            self.image_save_directory, self.actions_plot_filename
+        self.train_net_worths_learning_plot_path = os.path.join(
+            self.image_save_directory, self.train_net_worths_learning_plot_filename
         )
+        self.train_actions_plot_filename = f"train_actions_plot_{self.pipeline_id}.png"
+        self.train_actions_plot_path = os.path.join(
+            self.image_save_directory, self.train_actions_plot_filename
+        )
+
+        self.eval_scores_plot_filename = f"eval_scores_plot_{self.pipeline_id}.png"
+        self.eval_scores_plot_path = os.path.join(
+            self.image_save_directory, self.eval_scores_plot_filename
+        )
+        self.eval_net_worths_plot_filename = (
+            f"eval_net_worths_plot_{self.pipeline_id}.png"
+        )
+        self.eval_net_worths_plot_path = os.path.join(
+            self.image_save_directory, self.eval_net_worths_plot_filename
+        )
+        self.eval_actions_plot_filename = f"eval_actions_plot_{self.pipeline_id}.png"
+        self.eval_actions_plot_path = os.path.join(
+            self.image_save_directory, self.eval_actions_plot_filename
+        )
+
         self.q_eval_model_filename = f"q_eval_model_{self.pipeline_id}.pt"
         self.q_eval_model_path = os.path.join(
             self.model_save_directory, self.q_eval_model_filename
@@ -90,7 +110,9 @@ class DDQNRunnerConfig(Config):
             "logging_path": str,
             "pipeline_id": str,
             "seed": int,
-            "trade_file": str,
+            "train_file": str,
+            "eval_file": str,
+            "start_balance": int,
             "cash_at_risk": float,
             "lookback": int,
             "gamma": float,
