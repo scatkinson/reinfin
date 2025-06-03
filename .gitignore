@@ -4,3 +4,10 @@
 *.pyc
 *.log
 *.png
+*.pt
+
+model/
+logs/
+images/
+data/
+

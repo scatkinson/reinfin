@@ -294,4 +294,5 @@ def plot_curve(scores, figure_file):
     plt.clf()
     x = [i + 1 for i in range(len(scores))]
     plt.plot(x, scores)
+    logging.info(f"Saving plot at {figure_file}.")
     plt.savefig(figure_file)

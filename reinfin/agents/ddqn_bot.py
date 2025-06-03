@@ -52,7 +52,7 @@ class DuelingDeepQNetwork(nn.Module):
     def __init__(self, lr, n_actions, name, input_dims, chkpt_dir, hid_out_dims=512):
         super().__init__()
         self.chkpt_dir = chkpt_dir
-        self.checkpoint_file = os.path.join(self.chkpt_dir, name)
+        self.checkpoint_file = os.path.join(self.chkpt_dir, f"{name}.pt")
 
         self.fc1 = nn.Linear(in_features=input_dims, out_features=hid_out_dims)
         # value stream
@@ -73,11 +73,13 @@ class DuelingDeepQNetwork(nn.Module):
         return V, A
 
     def save_checkpoint(self):
-        logging.info("Saving Checkpoint")
+        logging.info(f"Saving Checkpoint at {self.checkpoint_file}")
         T.save(self.state_dict(), self.checkpoint_file)
 
     def load_checkpoint(self):
-        logging.info("Loading Checkpoint")
+        logging.info(
+            "Loading Checkpoint (must provide previous training run's pipeline_id in config)"
+        )
         self.load_state_dict(T.load(self.checkpoint_file))
 
 
@@ -95,6 +97,7 @@ class Agent:
         eps_dec=5e-7,
         replace=1000,
         chkpt_dir="/tmp",
+        pipeline_id="",
     ):
         self.gamma = gamma
         self.epsilon = epsilon
@@ -116,7 +119,7 @@ class Agent:
             self.lr,
             self.n_actions,
             input_dims=self.n_features,
-            name="trading_ddqn_q_eval",
+            name=f"q_eval_{pipeline_id}",
             chkpt_dir=self.chkpt_dir,
         )
 
@@ -124,7 +127,7 @@ class Agent:
             self.lr,
             self.n_actions,
             input_dims=self.n_features,
-            name="trading_ddqn_q_next",
+            name=f"q_next_{pipeline_id}",
             chkpt_dir=self.chkpt_dir,
         )
 
