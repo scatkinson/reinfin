@@ -108,6 +108,9 @@ class DDQNRunner:
             done = False
             observation = eval_env.reset()
             scores, net_worths, action_history = [], [], []
+            # eliminate exploration for the evaluation phase
+            agent.epsilon = 0
+            agent.eps_min = 0
             while not done:
                 action = agent.choose_action(observation)
                 observation_, reward, done, info = eval_env.step(action)
