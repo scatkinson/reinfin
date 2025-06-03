@@ -26,8 +26,12 @@ class DDQNRunnerConfig(Config):
     batch_size: int
     eps_min: float
     eps_dec: float
+
     n_features: int
     lr: float
+    hid_out_dims: int
+    dropout: float
+
     replace_cnt: int
 
     load_checkpoint: bool
@@ -122,6 +126,8 @@ class DDQNRunnerConfig(Config):
             "eps_dec": float,
             "n_features": int,
             "lr": float,
+            "hid_out_dims": int,
+            "dropout": float,
             "replace_cnt": int,
             "load_checkpoint": self.is_a(bool),
             "n_games": self.is_a(int),

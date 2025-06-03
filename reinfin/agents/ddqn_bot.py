@@ -49,16 +49,19 @@ class ReplayBuffer:
 
 class DuelingDeepQNetwork(nn.Module):
 
-    def __init__(self, lr, n_actions, name, input_dims, chkpt_dir, hid_out_dims=512):
+    def __init__(
+        self, lr, n_actions, name, input_dims, chkpt_dir, hid_out_dims=512, dropout=0.5
+    ):
         super().__init__()
         self.chkpt_dir = chkpt_dir
         self.checkpoint_file = os.path.join(self.chkpt_dir, f"{name}.pt")
 
         self.fc1 = nn.Linear(in_features=input_dims, out_features=hid_out_dims)
+        self.dropout = nn.Dropout(dropout)
         # value stream
         self.V = nn.Linear(in_features=hid_out_dims, out_features=1)
         # advantage function
-        self.A = nn.Linear(in_features=512, out_features=n_actions)
+        self.A = nn.Linear(in_features=hid_out_dims, out_features=n_actions)
 
         self.optimizer = optim.Adam(self.parameters(), lr=lr)
         self.loss = nn.MSELoss()
@@ -67,6 +70,7 @@ class DuelingDeepQNetwork(nn.Module):
 
     def forward(self, state):
         flat1 = F.relu(self.fc1(state))
+        flat1 = self.dropout(flat1)
         V = self.V(flat1)
         A = self.A(flat1)
 
@@ -91,6 +95,8 @@ class Agent:
         lr,
         n_actions,
         input_dims,
+        hid_out_dims,
+        dropout,
         batch_size,
         mem_size=1000000,
         eps_min=0.01,
@@ -105,6 +111,8 @@ class Agent:
         self.n_actions = n_actions
         self.input_dims = input_dims
         self.n_features = np.prod(input_dims)
+        self.hid_out_dims = hid_out_dims
+        self.dropout = dropout
         self.batch_size = batch_size
         self.eps_min = eps_min
         self.eps_dec = eps_dec
@@ -121,6 +129,8 @@ class Agent:
             input_dims=self.n_features,
             name=f"q_eval_{pipeline_id}",
             chkpt_dir=self.chkpt_dir,
+            hid_out_dims=self.hid_out_dims,
+            dropout=self.dropout,
         )
 
         self.q_next = DuelingDeepQNetwork(
@@ -129,6 +139,8 @@ class Agent:
             input_dims=self.n_features,
             name=f"q_next_{pipeline_id}",
             chkpt_dir=self.chkpt_dir,
+            hid_out_dims=self.hid_out_dims,
+            dropout=self.dropout,
         )
 
     def choose_action(self, observation):
