@@ -37,6 +37,8 @@ class DDQNRunner:
             eps_min=self.conf.eps_min,
             eps_dec=self.conf.eps_dec,
             input_dims=[self.conf.lookback, self.conf.n_features],
+            hid_out_dims=self.conf.hid_out_dims,
+            dropout=self.conf.dropout,
             lr=self.conf.lr,
             replace=self.conf.replace_cnt,
             chkpt_dir=self.conf.model_save_directory,
