@@ -124,6 +124,6 @@ class DDQNRunnerConfig(Config):
             "lr": float,
             "replace_cnt": int,
             "load_checkpoint": self.is_a(bool),
-            "n_games": int,
-            "save_model": bool,
+            "n_games": self.is_a(int),
+            "save_model": self.is_a(bool),
         }

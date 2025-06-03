@@ -12,6 +12,7 @@ class Environment(Env):
     def __init__(self, df, start_balance, cash_at_risk, lookback):
         self.df = df.reset_index(drop=True)
         self.current_step = 0
+        self.start_balance = start_balance
         self.balance = start_balance
         self.shares_held = 0
         self.net_worth = self.balance
@@ -37,7 +38,7 @@ class Environment(Env):
 
     def reset(self):
         self.current_step = 0
-        self.balance = 10000
+        self.balance = self.start_balance
         self.shares_held = 0
         self.net_worth = self.balance
         self.action_memory = []

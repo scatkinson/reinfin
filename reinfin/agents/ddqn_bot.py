@@ -52,7 +52,7 @@ class DuelingDeepQNetwork(nn.Module):
     def __init__(self, lr, n_actions, name, input_dims, chkpt_dir, hid_out_dims=512):
         super().__init__()
         self.chkpt_dir = chkpt_dir
-        self.checkpoint_file = os.path.join(self.chkpt_dir, name)
+        self.checkpoint_file = os.path.join(self.chkpt_dir, f"{name}.pt")
 
         self.fc1 = nn.Linear(in_features=input_dims, out_features=hid_out_dims)
         # value stream

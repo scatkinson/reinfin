@@ -1,14 +1,15 @@
-logging_path: logs/philbot_runner
+logging_path: logs/ddqn_runner
 pipeline_id:
 
 seed: 2
 
-trade_file: "data/test/spy_test.csv"
+train_file: "data/train/spy_train.csv"
+eval_file: "data/eval/spy_eval.csv"
 
-start_balance: 10000
-cash_at_risk: 0.85
+start_balance: 100000
+cash_at_risk: 0.75
 
-lookback: 30
+lookback: 45
 
 # gamma controls how much previous rounds influence reward
 gamma: 0.99
@@ -23,6 +24,6 @@ replace_cnt: 100
 # if loading a checkpoint, the previous run's pipeline_id must be provided
 load_checkpoint: False
 
-n_games: 5
+n_games: 250
 
 save_model: True

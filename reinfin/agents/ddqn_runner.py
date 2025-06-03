@@ -115,13 +115,17 @@ class DDQNRunner:
                 observation = observation_
                 scores.append(score)
                 net_worths.append(eval_env.net_worth)
-                action_history.append(action)
+                action_history.append(eval_env.action_map[action])
+
+            logging.info(
+                f"BENCHMARK Multiplier: {list(eval_df['close'])[-1]/eval_df['close'][0]}"
+            )
 
             logging.info(f"EVAL Final Net Worth: {eval_env.net_worth}.")
             logging.info(
-                f"EVAL Multiplier: {(eval_env.net_worth - self.conf.start_balance)/self.conf.start_balance}."
+                f"EVAL Multiplier: {eval_env.net_worth/self.conf.start_balance}."
             )
 
             plot_curve(scores, self.conf.eval_scores_plot_path)
             plot_curve(net_worths, self.conf.eval_net_worths_plot_path)
-            plot_curve(action_history, self.conf.eval_actions_plot_path)
+            plot_curve([x[1] for x in action_history], self.conf.eval_actions_plot_path)

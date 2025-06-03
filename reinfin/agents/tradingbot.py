@@ -4,7 +4,7 @@ from lumibot.strategies.strategy import Strategy
 from lumibot.traders import Trader
 from alpaca_trade_api import REST
 from timedelta import Timedelta
-from finbert_utils import estimate_sentiment
+from reinfin.finbert_utils import estimate_sentiment
 
 from datetime import datetime
 
@@ -12,10 +12,10 @@ API_KEY = "PKCURVNOMTTKV9O3BHYS"
 API_SECRET = "7vhBLuCOyRLnMWFluEWsedjIiNzXL29o7Crbttuc"
 BASE_URL = "https://paper-api.alpaca.markets/v2"
 
-SYMBOL = "GME"
-CASH_AT_RISK = 0.5
-AVARICE = 0.29
-RISK_TOLERANCE = 0.005
+SYMBOL = "SPY"
+CASH_AT_RISK = 0.75
+AVARICE = 0.20
+RISK_TOLERANCE = 0.05
 
 ALPACA_CREDS = {"API_KEY": API_KEY, "API_SECRET": API_SECRET, "PAPER": True}
 
@@ -80,7 +80,7 @@ class MLTrader(Strategy):
                 self.last_trade = "sell"
 
 
-start_date = datetime(2020, 1, 1)
+start_date = datetime(2023, 1, 1)
 end_date = datetime(2023, 12, 31)
 
 broker = Alpaca(ALPACA_CREDS)
