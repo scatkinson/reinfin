@@ -144,7 +144,7 @@ class Agent:
         )
 
     def choose_action(self, observation):
-        if np.random.random() > self.epsilon:
+        if np.random.random() >= self.epsilon:
             state = T.tensor([observation], dtype=T.float32).to(self.q_eval.device)
             _, advantage = self.q_eval.forward(state)
             action = T.argmax(advantage).item()
@@ -218,3 +218,5 @@ class Agent:
         self.learn_step_counter += 1
 
         self.decrement_epsilon()
+
+        return loss.item()

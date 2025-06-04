@@ -21,3 +21,4 @@ timedelta
 stable-baselines3
 gym-anytrading
 gym
+finta

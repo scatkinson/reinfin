@@ -1,0 +1,16 @@
+logging_path: "/tmp/logs"
+pipeline_id:
+
+df_path: "data/eval/spy_eval.csv"
+
+ema_period: 45
+
+rsi_period: 45
+
+macd_period_fast: 60
+macd_period_slow: 45
+macd_signal: 10
+
+bbands_period: 45
+
+stoch_period: 45

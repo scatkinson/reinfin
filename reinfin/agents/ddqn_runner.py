@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 import logging
 import torch as T
+from sklearn.preprocessing import StandardScaler
 
 
 class DDQNRunner:
@@ -19,13 +20,17 @@ class DDQNRunner:
             np.random.seed(self.conf.seed)
 
         logging.info(f"Loading trade_file from {self.conf.train_file}.")
-        file = self.conf.train_file
-        df = pd.read_csv(file)
+        train_file = self.conf.train_file
+        train_df = pd.read_csv(train_file)
+        train_df.fillna(method="bfill", inplace=True)
         logging.info(
             f"Instantiating Environment for trade_file with cash at risk: {self.conf.cash_at_risk}."
         )
         train_env = Environment(
-            df, self.conf.start_balance, self.conf.cash_at_risk, self.conf.lookback
+            train_df,
+            self.conf.start_balance,
+            self.conf.cash_at_risk,
+            self.conf.lookback,
         )
 
         logging.info(f"Instantiating Agent according to config.")
@@ -48,7 +53,13 @@ class DDQNRunner:
         if self.conf.load_checkpoint:
             agent.load_models()
 
-        scores, eps_history, net_worths, action_history = [], [], [], []
+        scores, eps_history, net_worths, action_history, loss_values = (
+            [],
+            [],
+            [],
+            [],
+            [],
+        )
         n_games = self.conf.n_games
 
         if n_games > 0:
@@ -64,11 +75,12 @@ class DDQNRunner:
                     agent.store_transition(
                         observation, action, reward, observation_, done
                     )
-                    agent.learn()
+                    loss = agent.learn()
+                    loss_values.append(loss)
+                    scores.append(score)
+                    eps_history.append(agent.epsilon)
                     observation = observation_
 
-                scores.append(score)
-                eps_history.append(agent.epsilon)
                 net_worths.append(train_env.net_worth)
                 action_history.append(train_env.action_memory)
 
@@ -77,6 +89,7 @@ class DDQNRunner:
                 logging.info(
                     f"\nEPISODE {i} score {score},\naverage score {avg_score},\nepsilon {agent.epsilon},\nnet worth: {train_env.net_worth}"
                 )
+                logging.info(f"Most recent loss: {loss}")
             plot_curve(scores, self.conf.train_scores_plot_path)
             plot_curve(net_worths, self.conf.train_net_worths_plot_path)
             plot_learning_curve(scores, self.conf.train_scores_learning_plot_path)
@@ -97,17 +110,19 @@ class DDQNRunner:
         if self.conf.eval_file:
             # evaluating agent
             eval_df = pd.read_csv(self.conf.eval_file)
+            eval_df.fillna(method="bfill", inplace=True)
             eval_env = Environment(
                 eval_df,
                 self.conf.start_balance,
                 self.conf.cash_at_risk,
                 self.conf.lookback,
+                train_env.scaler,
             )
             logging.info(f"Evaluating agent on {self.conf.eval_file}")
             score = 0
             done = False
             observation = eval_env.reset()
-            scores, net_worths, action_history = [], [], []
+            rewards, scores, net_worths, action_history = [], [], [], []
             # eliminate exploration for the evaluation phase
             agent.epsilon = 0
             agent.eps_min = 0
@@ -118,6 +133,7 @@ class DDQNRunner:
                 agent.store_transition(observation, action, reward, observation_, done)
                 agent.learn()
                 observation = observation_
+                rewards.append(reward)
                 scores.append(score)
                 net_worths.append(eval_env.net_worth)
                 action_history.append(eval_env.action_map[action])
