@@ -35,6 +35,7 @@ class Environment(Env):
         self.observation_space = Box(low=0, high=1, shape=(6,), dtype=np.float32)
         self.action_memory = []
         self.shares_held_memory = np.zeros(len(self.df), dtype=np.float32)
+        self.balance_memory = np.zeros(len(self.df), dtype=np.float32)
 
     def reset(self):
         self.current_step = 0
@@ -52,6 +53,9 @@ class Environment(Env):
             shares_held = self.shares_held_memory[
                 self.current_step + 1 - self.lookback : self.current_step + 1
             ]
+            balance = self.balance_memory[
+                self.current_step + 1 - self.lookback : self.current_step + 1
+            ]
         else:
             rows = self.df.iloc[: self.current_step + 1]
             row_pad = self.df.iloc[[self.current_step]]
@@ -64,16 +68,16 @@ class Environment(Env):
                 (0, self.lookback - (self.current_step + 1)),
                 constant_values=shares_held[self.current_step],
             )
-        obs = np.array(
-            [
-                rows["open"].to_numpy(),
-                rows["high"].to_numpy(),
-                rows["low"].to_numpy(),
-                rows["close"].to_numpy(),
-                rows["volume"].to_numpy(),
-                shares_held,
-            ]
-        )
+            balance = self.balance_memory[: self.current_step + 1]
+            balance = np.pad(
+                balance,
+                (0, self.lookback - (self.current_step + 1)),
+                constant_values=self.start_balance,
+            )
+        arr_list = [balance, shares_held] + [
+            rows[col].to_numpy() for col in self.df.columns if col != "trade_count"
+        ]
+        obs = np.array(arr_list)
         obs = obs.transpose().flatten()
         # return obs / np.max(obs)  # Normalize
         return obs
@@ -83,6 +87,7 @@ class Environment(Env):
 
         self.resolve_action_tuple(current_price, self.action_map[action])
         self.shares_held_memory[self.current_step] = self.shares_held
+        self.balance_memory[self.current_step] = self.balance
 
         self.net_worth = self.balance + self.shares_held * current_price
         reward = (self.net_worth - self.last_net_worth) / self.last_net_worth

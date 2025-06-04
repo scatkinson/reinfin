@@ -3,8 +3,8 @@ pipeline_id:
 
 seed: 2
 
-train_file: "data/train/spy_train.csv"
-eval_file: "data/eval/spy_eval.csv"
+train_file: "data/train/spy_train_ti.csv"
+eval_file: "data/eval/spy_eval_ti.csv"
 
 start_balance: 100000
 cash_at_risk: 0.75
@@ -17,15 +17,15 @@ epsilon: 1.0
 batch_size: 64
 eps_min: 0.01
 eps_dec: 0.0005
-n_features: 6
+n_features: 16
 lr: 0.001
-hid_out_dims: 1024
+hid_out_dims: 512
 dropout: 0.25
 replace_cnt: 100
 
 # if loading a checkpoint, the previous run's pipeline_id must be provided
 load_checkpoint: False
 
-n_games: 5
+n_games: 15
 
 save_model: True

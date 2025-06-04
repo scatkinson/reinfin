@@ -107,7 +107,7 @@ class DDQNRunner:
             score = 0
             done = False
             observation = eval_env.reset()
-            scores, net_worths, action_history = [], [], []
+            rewards, scores, net_worths, action_history = [], [], [], []
             # eliminate exploration for the evaluation phase
             agent.epsilon = 0
             agent.eps_min = 0
@@ -118,6 +118,7 @@ class DDQNRunner:
                 agent.store_transition(observation, action, reward, observation_, done)
                 agent.learn()
                 observation = observation_
+                rewards.append(reward)
                 scores.append(score)
                 net_worths.append(eval_env.net_worth)
                 action_history.append(eval_env.action_map[action])
