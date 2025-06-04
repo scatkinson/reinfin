@@ -6,11 +6,17 @@ import reinfin.constants as const
 
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 
 
 class Environment(Env):
-    def __init__(self, df, start_balance, cash_at_risk, lookback):
+    def __init__(self, df, start_balance, cash_at_risk, lookback, scaler=None):
         self.df = df.reset_index(drop=True)
+        if scaler:
+            self.scaler = scaler
+        else:
+            self.scaler = StandardScaler()
+            self.scaler.fit(self.df)
         self.current_step = 0
         self.start_balance = start_balance
         self.balance = start_balance
@@ -47,9 +53,14 @@ class Environment(Env):
 
     def _next_observation(self):
         if self.current_step >= self.lookback:
-            rows = self.df.iloc[
-                self.current_step + 1 - self.lookback : self.current_step + 1
-            ]
+            rows = pd.DataFrame(
+                self.scaler.transform(
+                    self.df.iloc[
+                        self.current_step + 1 - self.lookback : self.current_step + 1
+                    ]
+                ),
+                columns=self.df.columns,
+            )
             shares_held = self.shares_held_memory[
                 self.current_step + 1 - self.lookback : self.current_step + 1
             ]
@@ -57,8 +68,14 @@ class Environment(Env):
                 self.current_step + 1 - self.lookback : self.current_step + 1
             ]
         else:
-            rows = self.df.iloc[: self.current_step + 1]
-            row_pad = self.df.iloc[[self.current_step]]
+            rows = pd.DataFrame(
+                self.scaler.transform(self.df.iloc[: self.current_step + 1]),
+                columns=self.df.columns,
+            )
+            row_pad = pd.DataFrame(
+                self.scaler.transform(self.df.iloc[[self.current_step]]),
+                columns=self.df.columns,
+            )
             row_pad_list = [row_pad] * (self.lookback - (self.current_step + 1))
             rows = pd.concat([rows] + row_pad_list, axis=0)
 
@@ -72,7 +89,7 @@ class Environment(Env):
             balance = np.pad(
                 balance,
                 (0, self.lookback - (self.current_step + 1)),
-                constant_values=self.start_balance,
+                constant_values=balance[self.current_step],
             )
         arr_list = [balance, shares_held] + [
             rows[col].to_numpy() for col in self.df.columns if col != "trade_count"

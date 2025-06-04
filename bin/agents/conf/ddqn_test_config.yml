@@ -18,14 +18,14 @@ batch_size: 64
 eps_min: 0.01
 eps_dec: 0.0005
 n_features: 16
-lr: 0.001
-hid_out_dims: 512
-dropout: 0.25
+lr: 0.0001
+hid_out_dims: 1024
+dropout: 0.5
 replace_cnt: 100
 
 # if loading a checkpoint, the previous run's pipeline_id must be provided
 load_checkpoint: False
 
-n_games: 15
+n_games: 100
 
 save_model: True

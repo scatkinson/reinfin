@@ -59,4 +59,5 @@ class TechIndicators:
         logging.info(
             f"Saving updated DF with Technical Indicators at {self.conf.save_path}"
         )
+        self.df.fillna(method="bfill", inplace=True)
         self.df.to_csv(self.conf.save_path, index=False)
