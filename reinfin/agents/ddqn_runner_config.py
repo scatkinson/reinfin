@@ -57,6 +57,10 @@ class DDQNRunnerConfig(Config):
             os.makedirs(self.image_save_directory, exist_ok=True)
             os.makedirs(self.model_save_directory, exist_ok=True)
 
+        self.train_loss_plot_filename = f"train_loss_plot_{self.pipeline_id}.png"
+        self.train_loss_plot_path = os.path.join(
+            self.image_save_directory, self.train_loss_plot_filename
+        )
         self.train_scores_plot_filename = f"train_scores_plot_{self.pipeline_id}.png"
         self.train_scores_plot_path = os.path.join(
             self.image_save_directory, self.train_scores_plot_filename
@@ -84,6 +88,10 @@ class DDQNRunnerConfig(Config):
             self.image_save_directory, self.train_actions_plot_filename
         )
 
+        self.eval_loss_plot_filename = f"eval_loss_plot_{self.pipeline_id}.png"
+        self.eval_loss_plot_path = os.path.join(
+            self.image_save_directory, self.eval_loss_plot_filename
+        )
         self.eval_scores_plot_filename = f"eval_scores_plot_{self.pipeline_id}.png"
         self.eval_scores_plot_path = os.path.join(
             self.image_save_directory, self.eval_scores_plot_filename

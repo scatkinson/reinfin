@@ -80,7 +80,8 @@ class DDQNRunner:
                         observation, action, reward, observation_, done
                     )
                     loss = agent.learn()
-                    loss_values.append(loss)
+                    if loss:
+                        loss_values.append(loss)
                     scores.append(score)
                     eps_history.append(agent.epsilon)
                     observation = observation_
@@ -107,6 +108,7 @@ class DDQNRunner:
             plot_learning_curve(
                 net_worths, self.conf.train_net_worths_learning_plot_path
             )
+            plot_learning_curve(loss_values, self.conf.train_loss_plot_path)
 
             avg_actions = [
                 np.mean([action_memory[i][1] for action_memory in action_history])
@@ -133,7 +135,15 @@ class DDQNRunner:
             score = 0
             done = False
             observation = eval_env.reset()
-            rewards, scores, net_worths, action_history = [], [], [], []
+            rewards, scores, net_worths, action_history, loss_history = (
+                [],
+                [],
+                [],
+                [],
+                [],
+            )
+            loss_values = np.zeros(len(eval_env.df), dtype=np.float32)
+            index = 0
             # eliminate exploration for the evaluation phase
             agent.epsilon = 0
             agent.eps_min = 0
@@ -142,7 +152,8 @@ class DDQNRunner:
                 observation_, reward, done, info = eval_env.step(action)
                 score += reward
                 agent.store_transition(observation, action, reward, observation_, done)
-                agent.learn()
+                loss = agent.learn()
+                loss_values[index] = loss
                 observation = observation_
                 rewards.append(reward)
                 scores.append(score)
