@@ -53,7 +53,7 @@ class DDQNRunner:
         if self.conf.load_checkpoint:
             agent.load_models()
 
-        scores, eps_history, net_worths, action_history, loss_history = (
+        scores, eps_history, net_worths, action_history, loss_values = (
             [],
             [],
             [],
@@ -69,8 +69,6 @@ class DDQNRunner:
                 loss = np.inf
                 done = False
                 observation = train_env.reset()
-                loss_values = np.zeros(len(train_env.df), dtype=np.float32)
-                index = 0
                 # reset game action counter dict
                 game_action_counts = {key: 0 for key in train_env.action_map.keys()}
                 while not done:
@@ -82,15 +80,14 @@ class DDQNRunner:
                         observation, action, reward, observation_, done
                     )
                     loss = agent.learn()
-                    loss_values[index] = loss
+                    if loss:
+                        loss_values.append(loss)
                     scores.append(score)
                     eps_history.append(agent.epsilon)
                     observation = observation_
-                    index += 1
 
                 net_worths.append(train_env.net_worth)
                 action_history.append(train_env.action_memory)
-                loss_history.append(loss_values)
 
                 avg_score = np.mean(scores[-100:])
 
@@ -111,7 +108,7 @@ class DDQNRunner:
             plot_learning_curve(
                 net_worths, self.conf.train_net_worths_learning_plot_path
             )
-            plot_learning_curve(loss_history, self.conf.train_loss_plot_path)
+            plot_learning_curve(loss_values, self.conf.train_loss_plot_path)
 
             avg_actions = [
                 np.mean([action_memory[i][1] for action_memory in action_history])
@@ -175,4 +172,3 @@ class DDQNRunner:
             plot_curve(scores, self.conf.eval_scores_plot_path)
             plot_curve(net_worths, self.conf.eval_net_worths_plot_path)
             plot_curve([x[1] for x in action_history], self.conf.eval_actions_plot_path)
-            plot_curve(loss_values, self.conf.eval_loss_plot_path)
