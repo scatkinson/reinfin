@@ -22,3 +22,5 @@ MIDDLE_BBANDS_COL = "middle_bbands"
 LOWER_BBANDS_COL = "lower_bbands"
 STOCH_COL = "stoch"
 VWAP_COL = "vwap"
+
+TIMESTAMP_COL = "timestamp"

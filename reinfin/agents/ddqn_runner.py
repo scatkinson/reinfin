@@ -2,6 +2,7 @@ from reinfin.agents.ddqn_bot import Agent
 from reinfin.util import plot_learning_curve, plot_curve
 from reinfin.environment.environment import Environment
 from reinfin.agents import DDQNRunnerConfig
+import reinfin.constants as const
 
 import pandas as pd
 import numpy as np
@@ -20,8 +21,7 @@ class DDQNRunner:
             np.random.seed(self.conf.seed)
 
         logging.info(f"Loading trade_file from {self.conf.train_file}.")
-        train_file = self.conf.train_file
-        train_df = pd.read_csv(train_file)
+        train_df = pd.read_csv(self.conf.train_file, index_col=const.TIMESTAMP_COL)
         train_df.fillna(method="bfill", inplace=True)
         logging.info(
             f"Instantiating Environment for trade_file with cash at risk: {self.conf.cash_at_risk}."
@@ -109,7 +109,7 @@ class DDQNRunner:
 
         if self.conf.eval_file:
             # evaluating agent
-            eval_df = pd.read_csv(self.conf.eval_file)
+            eval_df = pd.read_csv(self.conf.eval_file, index_col=const.TIMESTAMP_COL)
             eval_df.fillna(method="bfill", inplace=True)
             eval_env = Environment(
                 eval_df,
