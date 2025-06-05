@@ -66,10 +66,14 @@ class DDQNRunner:
             for i in range(n_games):
                 logging.info(f"Running training round number {i}")
                 score = 0
+                loss = np.inf
                 done = False
                 observation = train_env.reset()
+                # reset game action counter dict
+                game_action_counts = {key: 0 for key in train_env.action_map.keys()}
                 while not done:
                     action = agent.choose_action(observation)
+                    game_action_counts[action] += 1
                     observation_, reward, done, info = train_env.step(action)
                     score += reward
                     agent.store_transition(
@@ -90,6 +94,13 @@ class DDQNRunner:
                     f"\nEPISODE {i} score {score},\naverage score {avg_score},\nepsilon {agent.epsilon},\nnet worth: {train_env.net_worth}"
                 )
                 logging.info(f"Most recent loss: {loss}")
+                action_report = "\n".join(
+                    [
+                        f"{train_env.action_map[k]},{v}"
+                        for k, v in game_action_counts.items()
+                    ]
+                )
+                logging.info(f"EPISODE {i} action counts:\n{action_report}\n")
             plot_curve(scores, self.conf.train_scores_plot_path)
             plot_curve(net_worths, self.conf.train_net_worths_plot_path)
             plot_learning_curve(scores, self.conf.train_scores_learning_plot_path)
