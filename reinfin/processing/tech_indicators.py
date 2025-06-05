@@ -9,7 +9,7 @@ import pandas as pd
 class TechIndicators:
     def __init__(self, conf: TechIndicatorsConfig):
         self.conf = conf
-        self.df = pd.read_csv(self.conf.df_path)
+        self.df = pd.read_csv(self.conf.df_path, index_col=const.TIMESTAMP_COL)
 
     def run_tech_indicators(self):
         self.obtain_indicators()
@@ -60,4 +60,4 @@ class TechIndicators:
             f"Saving updated DF with Technical Indicators at {self.conf.save_path}"
         )
         self.df.fillna(method="bfill", inplace=True)
-        self.df.to_csv(self.conf.save_path, index=False)
+        self.df.to_csv(self.conf.save_path)
