@@ -7,9 +7,9 @@ train_file: "data/train/spy_train_ti.csv"
 eval_file: "data/eval/spy_eval_ti.csv"
 
 start_balance: 100000
-cash_at_risk: 0.75
+cash_at_risk: 0.85
 
-lookback: 30
+lookback: 45
 
 # gamma controls how much previous rounds influence reward
 gamma: 0.99
@@ -19,7 +19,7 @@ eps_min: 0.01
 eps_dec: 0.0005
 n_features: 16
 lr: 0.00001
-hid_out_dims: 512
+hid_out_dims: 1024
 dropout: 0.5
 replace_cnt: 100
 
