@@ -2,7 +2,7 @@ API_KEY_KEY = "API_KEY"
 API_SECRET_KEY = "API_SECRET"
 BASE_URL_KEY = "BASE_URL"
 
-DATE_FORMAT_STR = "%Y%m%d"
+DATE_FORMAT_STR = "%Y-%m-%d"
 
 SYMBOL_KEY = "symbol"
 LOOKBACK_KEY = "lookback"
@@ -24,3 +24,8 @@ STOCH_COL = "stoch"
 VWAP_COL = "vwap"
 
 TIMESTAMP_COL = "timestamp"
+
+POS_STR = "positive"
+NEG_STR = "negative"
+NEU_STR = "neutral"
+SENTIMENT_COL = "sentiment"

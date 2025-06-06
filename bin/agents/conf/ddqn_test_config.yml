@@ -3,13 +3,13 @@ pipeline_id:
 
 seed: 2
 
-train_file: "data/train/spy_train_ti.csv"
-eval_file: "data/eval/spy_eval_ti.csv"
+train_file: "data/train/spy_train_sent_ti.csv"
+eval_file: "data/eval/spy_eval_sent_ti.csv"
 
 start_balance: 100000
 cash_at_risk: 0.85
 
-lookback: 60
+lookback: 45
 
 # gamma controls how much previous rounds influence reward
 gamma: 0.99
@@ -17,9 +17,9 @@ epsilon: 1.0
 batch_size: 32
 eps_min: 0.01
 eps_dec: 0.0005
-n_features: 16
+n_features: 17
 lr: 0.00001
-hid_out_dims: 512
+hid_out_dims: 1024
 dropout: 0.5
 replace_cnt: 100
 
