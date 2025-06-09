@@ -10,7 +10,15 @@ from sklearn.preprocessing import StandardScaler
 
 
 class Environment(Env):
-    def __init__(self, df, start_balance, cash_at_risk, lookback, scaler=None):
+    def __init__(
+        self,
+        df,
+        start_cash_balance,
+        cash_at_risk,
+        lookback,
+        take_profit_threshold=np.inf,
+        scaler=None,
+    ):
         self.df = df.reset_index(drop=True)
         if scaler:
             self.scaler = scaler
@@ -18,11 +26,12 @@ class Environment(Env):
             self.scaler = StandardScaler()
             self.scaler.fit(self.df)
         self.current_step = 0
-        self.start_balance = start_balance
-        self.balance = start_balance
+        self.start_cash_balance = start_cash_balance
+        self.cash_balance = start_cash_balance
         self.shares_held = 0
-        self.net_worth = self.balance
-        self.last_net_worth = self.balance
+        self.dividend_balance = 0
+        self.net_worth = self.cash_balance
+        self.last_net_worth = self.cash_balance
         self.max_steps = len(df) - 1
         self.action_space = Discrete(9)
         self.action_map = {
@@ -38,16 +47,19 @@ class Environment(Env):
         }
         self.cash_at_risk = cash_at_risk
         self.lookback = lookback
+        self.take_profit_threshold = take_profit_threshold
         self.observation_space = Box(low=0, high=1, shape=(6,), dtype=np.float32)
         self.action_memory = []
         self.shares_held_memory = np.zeros(len(self.df), dtype=np.float32)
-        self.balance_memory = np.zeros(len(self.df), dtype=np.float32)
+        self.cash_balance_memory = np.zeros(len(self.df), dtype=np.float32)
+        self.dividend_memory = np.zeros(len(self.df), dtype=np.float32)
 
     def reset(self):
         self.current_step = 0
-        self.balance = self.start_balance
+        self.cash_balance = self.start_cash_balance
         self.shares_held = 0
-        self.net_worth = self.balance
+        self.dividend_balance = 0
+        self.net_worth = self.cash_balance
         self.action_memory = []
         return self._next_observation()
 
@@ -64,7 +76,7 @@ class Environment(Env):
             shares_held = self.shares_held_memory[
                 self.current_step + 1 - self.lookback : self.current_step + 1
             ]
-            balance = self.balance_memory[
+            balance = self.cash_balance_memory[
                 self.current_step + 1 - self.lookback : self.current_step + 1
             ]
         else:
@@ -85,7 +97,7 @@ class Environment(Env):
                 (0, self.lookback - (self.current_step + 1)),
                 constant_values=shares_held[self.current_step],
             )
-            balance = self.balance_memory[: self.current_step + 1]
+            balance = self.cash_balance_memory[: self.current_step + 1]
             balance = np.pad(
                 balance,
                 (0, self.lookback - (self.current_step + 1)),
@@ -104,16 +116,21 @@ class Environment(Env):
 
         self.resolve_action_tuple(current_price, self.action_map[action])
         self.shares_held_memory[self.current_step] = self.shares_held
-        self.balance_memory[self.current_step] = self.balance
+        self.cash_balance_memory[self.current_step] = self.cash_balance
 
-        self.net_worth = self.balance + self.shares_held * current_price
+        self.check_take_profit(current_price)
+        self.dividend_memory[self.current_step] = self.dividend_balance
+
+        self.net_worth = (
+            self.cash_balance + self.shares_held * current_price + self.dividend_balance
+        )
         reward = (self.net_worth - self.last_net_worth) / self.last_net_worth
 
         self.current_step += 1
         done = self.current_step >= self.max_steps
 
         if self.current_step % 500 == 0:
-            self.render()
+            self.render(current_price)
             logging.info(f"Last reward: {reward}.")
             logging.info(f"Last net worth: {self.last_net_worth}.")
         self.last_net_worth = self.net_worth
@@ -125,19 +142,19 @@ class Environment(Env):
     def resolve_action_tuple(self, current_price, pair):
         if pair[0] == const.BUY_STR:
             # no buys if not enough cash
-            if self.balance < 1:
+            if self.cash_balance < 1:
                 return
-            shares = (self.cash_at_risk * pair[1] * self.balance) / current_price
+            shares = (self.cash_at_risk * pair[1] * self.cash_balance) / current_price
             # if shares * current_price >= const.LOGGING_THRESHOLD:
             #     self.render()
             #     logging.info(
             #         f"Purchasing {shares} shares at current price {current_price} for {shares * current_price} dollars."
             #     )
-            self.balance -= shares * current_price
+            self.cash_balance -= shares * current_price
             self.shares_held += shares
         elif pair[0] == const.SELL_STR:
             shares_sold = self.shares_held * (-1) * pair[1]
-            self.balance += shares_sold * current_price
+            self.cash_balance += shares_sold * current_price
             self.shares_held -= shares_sold
             # if shares_sold * current_price >= const.LOGGING_THRESHOLD:
             #     self.render()
@@ -147,7 +164,30 @@ class Environment(Env):
         else:
             return
 
-    def render(self):
+    def render(self, current_price):
         logging.info(
-            f"Step: {self.current_step}, Balance: {self.balance}, Shares: {self.shares_held}, Net Worth: {self.net_worth}"
+            f"\nStep: {self.current_step}, \nCash Balance: {self.cash_balance}, \nShares: {self.shares_held}, \nCurrent Price: {current_price}, \nDividend Balance: {self.dividend_balance}, \nNet Worth: {self.net_worth}"
         )
+
+    def check_take_profit(self, current_price):
+        # sell off shares if portfolio hits a specified profit and deposit in a dividends account
+        if (
+            self.shares_held * current_price + self.cash_balance
+            > (1 + self.take_profit_threshold) * self.start_cash_balance
+            and self.shares_held * current_price
+            > self.take_profit_threshold * self.start_cash_balance
+        ):
+            logging.info(
+                f"Portfolio value exceeded {1 + self.take_profit_threshold}x growth"
+            )
+            shares_to_sell = (
+                self.start_cash_balance * self.take_profit_threshold / current_price
+            )
+            logging.info(
+                f"Selling {shares_to_sell} shares at price {current_price} and depositing profit {shares_to_sell * current_price} into dividend account"
+            )
+            self.shares_held -= shares_to_sell
+            self.dividend_balance += (
+                self.start_cash_balance * self.take_profit_threshold
+            )
+            self.render(current_price)
