@@ -28,9 +28,10 @@ class DDQNRunner:
         )
         train_env = Environment(
             train_df,
-            self.conf.start_balance,
+            self.conf.start_cash_balance,
             self.conf.cash_at_risk,
             self.conf.lookback,
+            take_profit_threshold=self.conf.take_profit_threshold,
         )
 
         logging.info(f"Instantiating Agent according to config.")
@@ -126,10 +127,11 @@ class DDQNRunner:
             eval_df.fillna(method="bfill", inplace=True)
             eval_env = Environment(
                 eval_df,
-                self.conf.start_balance,
+                self.conf.start_cash_balance,
                 self.conf.cash_at_risk,
                 self.conf.lookback,
-                train_env.scaler,
+                take_profit_threshold=self.conf.take_profit_threshold,
+                scaler=train_env.scaler,
             )
             logging.info(f"Evaluating agent on {self.conf.eval_file}")
             score = 0
@@ -166,7 +168,7 @@ class DDQNRunner:
 
             logging.info(f"EVAL Final Net Worth: {eval_env.net_worth}.")
             logging.info(
-                f"EVAL Multiplier: {eval_env.net_worth/self.conf.start_balance}."
+                f"EVAL Multiplier: {eval_env.net_worth/self.conf.start_cash_balance}."
             )
 
             plot_curve(scores, self.conf.eval_scores_plot_path)

@@ -15,11 +15,13 @@ class DDQNRunnerConfig(Config):
     train_file: str
     eval_file: str
 
-    start_balance: int
+    start_cash_balance: int
     cash_at_risk: float
 
     # how many time units in the past (including current time unit) to consider
     lookback: int
+
+    take_profit_threshold: float
 
     gamma: float
     epsilon: float
@@ -124,9 +126,10 @@ class DDQNRunnerConfig(Config):
             "seed": int,
             "train_file": str,
             "eval_file": str,
-            "start_balance": int,
+            "start_cash_balance": int,
             "cash_at_risk": float,
             "lookback": int,
+            "take_profit_threshold": float,
             "gamma": float,
             "epsilon": float,
             "batch_size": int,
