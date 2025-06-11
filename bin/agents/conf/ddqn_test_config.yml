@@ -9,25 +9,27 @@ eval_file: "data/eval/spy_eval_sent_ti.csv"
 start_cash_balance: 100000
 cash_at_risk: 0.85
 
-lookback: 45
+lookback: 60
 
 take_profit_threshold: 0.05
+stop_loss_threshold: 0.05
+max_stop_loss_calls: 3
 
 # gamma controls how much previous rounds influence reward
-gamma: 0.99
+gamma: 0.95
 epsilon: 1.0
 batch_size: 64
 eps_min: 0.01
 eps_dec: 0.0005
 n_features: 17
 lr: 0.00001
-hid_out_dims: 1024
-dropout: 0.5
+hid_out_dims: 768
+dropout: 0.25
 replace_cnt: 100
 
 # if loading a checkpoint, the previous run's pipeline_id must be provided
 load_checkpoint: False
 
-n_games: 300
+n_games: 500
 
 save_model: True

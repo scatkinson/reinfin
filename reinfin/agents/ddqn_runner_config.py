@@ -22,6 +22,8 @@ class DDQNRunnerConfig(Config):
     lookback: int
 
     take_profit_threshold: float
+    stop_loss_threshold: float
+    max_stop_loss_calls: int
 
     gamma: float
     epsilon: float
@@ -130,6 +132,8 @@ class DDQNRunnerConfig(Config):
             "cash_at_risk": float,
             "lookback": int,
             "take_profit_threshold": float,
+            "stop_loss_threshold": float,
+            "max_stop_loss_calls": int,
             "gamma": float,
             "epsilon": float,
             "batch_size": int,
