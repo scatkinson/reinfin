@@ -17,6 +17,8 @@ class Environment(Env):
         cash_at_risk,
         lookback,
         take_profit_threshold=np.inf,
+        stop_loss_threshold=-np.inf,
+        max_stop_loss_calls=0,
         scaler=None,
     ):
         self.df = df.reset_index(drop=True)
@@ -48,8 +50,13 @@ class Environment(Env):
         self.cash_at_risk = cash_at_risk
         self.lookback = lookback
         self.take_profit_threshold = take_profit_threshold
+        self.stop_loss_threshold = stop_loss_threshold
+        self.stop_loss_gate = 0
+        self.stop_loss_gate_count = 1
+        self.max_stop_loss_calls = max_stop_loss_calls
         self.observation_space = Box(low=0, high=1, shape=(6,), dtype=np.float32)
         self.action_memory = []
+        self.purchase_price_memory = []
         self.shares_held_memory = np.zeros(len(self.df), dtype=np.float32)
         self.cash_balance_memory = np.zeros(len(self.df), dtype=np.float32)
         self.dividend_memory = np.zeros(len(self.df), dtype=np.float32)
@@ -59,8 +66,12 @@ class Environment(Env):
         self.cash_balance = self.start_cash_balance
         self.shares_held = 0
         self.dividend_balance = 0
+        self.stop_loss_gate = 0
+        self.stop_loss_gate_count = 1
         self.net_worth = self.cash_balance
         self.action_memory = []
+        self.purchase_price_memory = []
+
         return self._next_observation()
 
     def _next_observation(self):
@@ -121,6 +132,8 @@ class Environment(Env):
         self.check_take_profit(current_price)
         self.dividend_memory[self.current_step] = self.dividend_balance
 
+        self.check_stop_loss(current_price)
+
         self.net_worth = (
             self.cash_balance + self.shares_held * current_price + self.dividend_balance
         )
@@ -152,6 +165,8 @@ class Environment(Env):
             #     )
             self.cash_balance -= shares * current_price
             self.shares_held += shares
+            # append purchase price to list to track average purchase price for stop loss logic
+            self.purchase_price_memory.append(current_price)
         elif pair[0] == const.SELL_STR:
             shares_sold = self.shares_held * (-1) * pair[1]
             self.cash_balance += shares_sold * current_price
@@ -190,4 +205,46 @@ class Environment(Env):
             self.dividend_balance += (
                 self.start_cash_balance * self.take_profit_threshold
             )
+            self.net_worth = (
+                self.cash_balance
+                + self.shares_held * current_price
+                + self.dividend_balance
+            )
             self.render(current_price)
+            self.stop_loss_gate = min(
+                [
+                    self.max_stop_loss_calls,
+                    self.stop_loss_gate + self.stop_loss_gate_count,
+                ]
+            )
+            self.stop_loss_gate_count += 1
+
+    def check_stop_loss(self, current_price):
+        # sell off shares if portfolio dips below a threshold (stop_loss_threshold * (start_cash_balance + dividend_balance)
+        if (
+            self.shares_held > 0
+            and self.dividend_balance > 0
+            and self.stop_loss_gate > 0
+            and (
+                self.net_worth
+                < (self.start_cash_balance + self.dividend_balance)
+                * (1 - self.stop_loss_threshold)
+                or current_price
+                < np.mean(self.purchase_price_memory) * (1 - self.stop_loss_threshold)
+            )
+        ):
+            logging.info(
+                f"Portfolio value fell below  {1 - self.stop_loss_threshold}x or current price dropped below {1-self.stop_loss_threshold}x average purchase price."
+            )
+            logging.info(f"Selling all {self.shares_held} for price {current_price}.")
+            self.cash_balance += self.shares_held * current_price
+            self.shares_held = 0
+            self.net_worth = (
+                self.cash_balance
+                + self.shares_held * current_price
+                + self.dividend_balance
+            )
+            self.render(current_price)
+            # reset purchase_price_memory
+            self.purchase_price_memory = []
+            self.stop_loss_gate = max([0, self.stop_loss_gate - 1])

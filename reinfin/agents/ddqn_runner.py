@@ -32,6 +32,8 @@ class DDQNRunner:
             self.conf.cash_at_risk,
             self.conf.lookback,
             take_profit_threshold=self.conf.take_profit_threshold,
+            stop_loss_threshold=self.conf.stop_loss_threshold,
+            max_stop_loss_calls=self.conf.max_stop_loss_calls,
         )
 
         logging.info(f"Instantiating Agent according to config.")
@@ -131,6 +133,8 @@ class DDQNRunner:
                 self.conf.cash_at_risk,
                 self.conf.lookback,
                 take_profit_threshold=self.conf.take_profit_threshold,
+                stop_loss_threshold=self.conf.stop_loss_threshold,
+                max_stop_loss_calls=self.conf.max_stop_loss_calls,
                 scaler=train_env.scaler,
             )
             logging.info(f"Evaluating agent on {self.conf.eval_file}")
