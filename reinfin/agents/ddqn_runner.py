@@ -70,6 +70,7 @@ class DDQNRunner:
             for i in range(n_games):
                 logging.info(f"Running training round number {i}")
                 score = 0
+                episode_losses = []
                 loss = np.inf
                 done = False
                 observation = train_env.reset()
@@ -85,18 +86,27 @@ class DDQNRunner:
                     )
                     loss = agent.learn()
                     if loss:
-                        loss_values.append(loss)
+                        episode_losses.append(loss)
                     scores.append(score)
                     eps_history.append(agent.epsilon)
                     observation = observation_
 
+                loss_values.append(episode_losses)
                 net_worths.append(train_env.net_worth)
                 action_history.append(train_env.action_memory)
 
                 avg_score = np.mean(scores[-100:])
 
                 logging.info(
-                    f"\nEPISODE {i} score {score},\naverage score {avg_score},\nepsilon {agent.epsilon},\nnet worth: {train_env.net_worth}"
+                    f"""
+                    \nEPISODE {i} 
+                    \nCash Balance: {train_env.cash_balance}, 
+                    \nShares Count: {train_env.shares_held}, 
+                    \nDividend balance: {train_env.dividend_balance},
+                    \nStop Loss Intervention Count: {train_env.stop_loss_intervention_count},
+                    \nNet Worth: {train_env.net_worth},
+                    \nAverage Episode Loss: {np.mean(episode_losses)}
+                    """
                 )
             plot_curve(scores, self.conf.train_scores_plot_path)
             plot_curve(net_worths, self.conf.train_net_worths_plot_path)
@@ -104,7 +114,10 @@ class DDQNRunner:
             plot_learning_curve(
                 net_worths, self.conf.train_net_worths_learning_plot_path
             )
-            plot_learning_curve(loss_values, self.conf.train_loss_plot_path)
+            plot_learning_curve(
+                [np.mean(e_losses) for e_losses in loss_values],
+                self.conf.train_loss_plot_path,
+            )
 
             avg_actions = [
                 np.mean([action_memory[i][1] for action_memory in action_history])
@@ -160,12 +173,19 @@ class DDQNRunner:
                 action_history.append(eval_env.action_map[action])
 
             logging.info(
-                f"BENCHMARK Multiplier: {list(eval_df['close'])[-1]/eval_df['close'][0]}"
+                f"""
+                \nEVALUATION ROUND
+                \nCash Balance: {eval_env.cash_balance}, 
+                \nShares Count: {eval_env.shares_held}, 
+                \nDividend balance: {eval_env.dividend_balance},
+                \nStop Loss Intervention Count: {eval_env.stop_loss_intervention_count},
+                \nNet Worth: {eval_env.net_worth}
+                \nMultiplier: {eval_env.net_worth/self.conf.start_cash_balance}
+                """
             )
 
-            logging.info(f"EVAL Final Net Worth: {eval_env.net_worth}.")
             logging.info(
-                f"EVAL Multiplier: {eval_env.net_worth/self.conf.start_cash_balance}."
+                f"BENCHMARK Multiplier: {eval_df['close'].iloc[-1]/eval_df['close'].iloc[0]}"
             )
 
             plot_curve(scores, self.conf.eval_scores_plot_path)
