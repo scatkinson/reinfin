@@ -5,8 +5,8 @@ api_key: PKCURVNOMTTKV9O3BHYS
 api_secret: 7vhBLuCOyRLnMWFluEWsedjIiNzXL29o7Crbttuc
 base_url: "https://paper-api.alpaca.markets/v2"
 
-start_date: "2020-01-01"
-end_date: "2023-12-31"
+start_date: "2019-12-15"
+end_date: "2024-12-31"
 
 timeframe_str: Day
 
