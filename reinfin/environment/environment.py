@@ -53,6 +53,7 @@ class Environment(Env):
         self.stop_loss_threshold = stop_loss_threshold
         self.stop_loss_gate = 0
         self.stop_loss_gate_count = 1
+        self.stop_loss_intervention_count = 0
         self.max_stop_loss_calls = max_stop_loss_calls
         self.observation_space = Box(low=0, high=1, shape=(6,), dtype=np.float32)
         self.action_memory = []
@@ -68,6 +69,7 @@ class Environment(Env):
         self.dividend_balance = 0
         self.stop_loss_gate = 0
         self.stop_loss_gate_count = 1
+        self.stop_loss_intervention_count = 0
         self.net_worth = self.cash_balance
         self.action_memory = []
         self.purchase_price_memory = []
@@ -224,3 +226,4 @@ class Environment(Env):
             # reset purchase_price_memory
             self.purchase_price_memory = []
             self.stop_loss_gate = max([0, self.stop_loss_gate - 1])
+            self.stop_loss_intervention_count += 1
