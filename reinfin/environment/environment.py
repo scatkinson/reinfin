@@ -115,7 +115,9 @@ class Environment(Env):
                 constant_values=balance[self.current_step],
             )
         arr_list = [balance, shares_held] + [
-            rows[col].to_numpy() for col in self.df.columns if col != "trade_count"
+            rows[col].to_numpy()
+            for col in self.df.columns
+            if col not in ["trade_count", "close"]
         ]
         obs = np.array(arr_list)
         obs = obs.transpose().flatten()
@@ -142,10 +144,6 @@ class Environment(Env):
         self.current_step += 1
         done = self.current_step >= self.max_steps
 
-        if self.current_step % 500 == 0:
-            self.render(current_price)
-            logging.info(f"Last reward: {reward}.")
-            logging.info(f"Last net worth: {self.last_net_worth}.")
         self.last_net_worth = self.net_worth
 
         self.action_memory.append(self.action_map[action])
@@ -158,11 +156,6 @@ class Environment(Env):
             if self.cash_balance < 1:
                 return
             shares = (self.cash_at_risk * pair[1] * self.cash_balance) / current_price
-            # if shares * current_price >= const.LOGGING_THRESHOLD:
-            #     self.render()
-            #     logging.info(
-            #         f"Purchasing {shares} shares at current price {current_price} for {shares * current_price} dollars."
-            #     )
             self.cash_balance -= shares * current_price
             self.shares_held += shares
             # append purchase price to list to track average purchase price for stop loss logic
@@ -171,11 +164,6 @@ class Environment(Env):
             shares_sold = self.shares_held * (-1) * pair[1]
             self.cash_balance += shares_sold * current_price
             self.shares_held -= shares_sold
-            # if shares_sold * current_price >= const.LOGGING_THRESHOLD:
-            #     self.render()
-            #     logging.info(
-            #         f"Selling {shares_sold} at current price {current_price} for {shares_sold*current_price} dollars."
-            #     )
         else:
             return
 
@@ -192,14 +180,8 @@ class Environment(Env):
             and self.shares_held * current_price
             > self.take_profit_threshold * self.start_cash_balance
         ):
-            logging.info(
-                f"Portfolio value exceeded {1 + self.take_profit_threshold}x growth"
-            )
             shares_to_sell = (
                 self.start_cash_balance * self.take_profit_threshold / current_price
-            )
-            logging.info(
-                f"Selling {shares_to_sell} shares at price {current_price} and depositing profit {shares_to_sell * current_price} into dividend account"
             )
             self.shares_held -= shares_to_sell
             self.dividend_balance += (
@@ -210,7 +192,6 @@ class Environment(Env):
                 + self.shares_held * current_price
                 + self.dividend_balance
             )
-            self.render(current_price)
             self.stop_loss_gate = min(
                 [
                     self.max_stop_loss_calls,
@@ -233,10 +214,6 @@ class Environment(Env):
                 < np.mean(self.purchase_price_memory) * (1 - self.stop_loss_threshold)
             )
         ):
-            logging.info(
-                f"Portfolio value fell below  {1 - self.stop_loss_threshold}x or current price dropped below {1-self.stop_loss_threshold}x average purchase price."
-            )
-            logging.info(f"Selling all {self.shares_held} for price {current_price}.")
             self.cash_balance += self.shares_held * current_price
             self.shares_held = 0
             self.net_worth = (
@@ -244,7 +221,6 @@ class Environment(Env):
                 + self.shares_held * current_price
                 + self.dividend_balance
             )
-            self.render(current_price)
             # reset purchase_price_memory
             self.purchase_price_memory = []
             self.stop_loss_gate = max([0, self.stop_loss_gate - 1])

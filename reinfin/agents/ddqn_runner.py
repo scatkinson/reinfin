@@ -19,6 +19,7 @@ class DDQNRunner:
     def run_ddqn(self):
         if self.conf.seed > 0:
             np.random.seed(self.conf.seed)
+            logging.info(f"Setting random seed to {np.random.seed}")
 
         logging.info(f"Loading trade_file from {self.conf.train_file}.")
         train_df = pd.read_csv(self.conf.train_file, index_col=const.TIMESTAMP_COL)
@@ -97,14 +98,6 @@ class DDQNRunner:
                 logging.info(
                     f"\nEPISODE {i} score {score},\naverage score {avg_score},\nepsilon {agent.epsilon},\nnet worth: {train_env.net_worth}"
                 )
-                logging.info(f"Most recent loss: {loss}")
-                action_report = "\n".join(
-                    [
-                        f"{train_env.action_map[k]},{v}"
-                        for k, v in game_action_counts.items()
-                    ]
-                )
-                logging.info(f"EPISODE {i} action counts:\n{action_report}\n")
             plot_curve(scores, self.conf.train_scores_plot_path)
             plot_curve(net_worths, self.conf.train_net_worths_plot_path)
             plot_learning_curve(scores, self.conf.train_scores_learning_plot_path)

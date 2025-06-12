@@ -158,7 +158,6 @@ class Agent:
 
     def replace_target_network(self):
         if self.learn_step_counter % self.replace_target_cnt == 0:
-            logging.info("Replacing q_next state.")
             self.q_next.load_state_dict(self.q_eval.state_dict())
 
     def decrement_epsilon(self):
