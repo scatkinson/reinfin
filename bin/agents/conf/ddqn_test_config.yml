@@ -11,25 +11,25 @@ cash_at_risk: 0.85
 
 lookback: 60
 
-take_profit_threshold: 0.05
-stop_loss_threshold: 0.05
+take_profit_threshold: 0.01
+stop_loss_threshold: 0.01
 max_stop_loss_calls: 3
 
 # gamma controls how much previous rounds influence reward
-gamma: 0.95
+gamma: 0.999
 epsilon: 1.0
-batch_size: 64
+batch_size: 32
 eps_min: 0.01
 eps_dec: 0.0005
-n_features: 17
+n_features: 18
 lr: 0.00001
-hid_out_dims: 768
+hid_out_dims: 32
 dropout: 0.25
 replace_cnt: 100
 
 # if loading a checkpoint, the previous run's pipeline_id must be provided
 load_checkpoint: False
 
-n_games: 3
+n_games: 50
 
 save_model: True
