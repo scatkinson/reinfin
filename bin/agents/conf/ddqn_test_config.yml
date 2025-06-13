@@ -23,8 +23,8 @@ eps_min: 0.1
 eps_dec: 0.0005
 n_features: 18
 lr: 0.00001
-hid_out_dims: 32
-dropout: 0.5
+hid_out_dims: [32,32]
+dropout_size_list: [0.5,0.5]
 replace_cnt: 100
 
 # if loading a checkpoint, the previous run's pipeline_id must be provided

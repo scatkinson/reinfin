@@ -33,8 +33,8 @@ class DDQNRunnerConfig(Config):
 
     n_features: int
     lr: float
-    hid_out_dims: int
-    dropout: float
+    hid_out_dims: list
+    dropout_size_list: list
 
     replace_cnt: int
 
@@ -141,8 +141,8 @@ class DDQNRunnerConfig(Config):
             "eps_dec": float,
             "n_features": int,
             "lr": float,
-            "hid_out_dims": int,
-            "dropout": float,
+            "hid_out_dims": list,
+            "dropout_size_list": list,
             "replace_cnt": int,
             "load_checkpoint": self.is_a(bool),
             "n_games": self.is_a(int),
