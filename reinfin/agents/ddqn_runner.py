@@ -19,7 +19,7 @@ class DDQNRunner:
     def run_ddqn(self):
         if self.conf.seed > 0:
             np.random.seed(self.conf.seed)
-            T.seed(self.conf.seed)
+            T.manual_seed(self.conf.seed)
             logging.info(f"Setting random seed to {self.conf.seed}")
 
         logging.info(f"Loading trade_file from {self.conf.train_file}.")
