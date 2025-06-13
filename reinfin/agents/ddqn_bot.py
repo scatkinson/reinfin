@@ -50,18 +50,37 @@ class ReplayBuffer:
 class DuelingDeepQNetwork(nn.Module):
 
     def __init__(
-        self, lr, n_actions, name, input_dims, chkpt_dir, hid_out_dims=512, dropout=0.5
+        self,
+        lr,
+        n_actions,
+        name,
+        input_dims,
+        chkpt_dir,
+        hid_out_dims=[512],
+        dropout_size_list=[0.5],
     ):
         super().__init__()
         self.chkpt_dir = chkpt_dir
         self.checkpoint_file = os.path.join(self.chkpt_dir, f"{name}.pt")
 
-        self.fc1 = nn.Linear(in_features=input_dims, out_features=hid_out_dims)
-        self.dropout = nn.Dropout(dropout)
+        self.hidden_layers_list = []
+        self.dropout_list = []
+        for i, hid_out_dim in enumerate(hid_out_dims):
+            if i == 0:
+                self.hidden_layers_list.append(
+                    nn.Linear(in_features=input_dims, out_features=hid_out_dim)
+                )
+            else:
+                self.hidden_layers_list.append(
+                    nn.Linear(in_features=hid_out_dims[i - 1], out_features=hid_out_dim)
+                )
+
+        for dropout_size in dropout_size_list:
+            self.dropout_list.append(nn.Dropout(dropout_size))
         # value stream
-        self.V = nn.Linear(in_features=hid_out_dims, out_features=1)
+        self.V = nn.Linear(in_features=hid_out_dims[-1], out_features=1)
         # advantage function
-        self.A = nn.Linear(in_features=hid_out_dims, out_features=n_actions)
+        self.A = nn.Linear(in_features=hid_out_dims[-1], out_features=n_actions)
 
         self.optimizer = optim.Adam(self.parameters(), lr=lr)
         self.loss = nn.MSELoss()
@@ -69,8 +88,10 @@ class DuelingDeepQNetwork(nn.Module):
         self.to(self.device)
 
     def forward(self, state):
-        flat1 = F.relu(self.fc1(state))
-        flat1 = self.dropout(flat1)
+        flat1 = state
+        for fc, dropout in zip(self.hidden_layers_list, self.dropout_list):
+            flat1 = F.relu(fc(flat1))
+            flat1 = dropout(flat1)
         V = self.V(flat1)
         A = self.A(flat1)
 
@@ -96,7 +117,7 @@ class Agent:
         n_actions,
         input_dims,
         hid_out_dims,
-        dropout,
+        dropout_size_list,
         batch_size,
         mem_size=1000000,
         eps_min=0.01,
@@ -112,7 +133,7 @@ class Agent:
         self.input_dims = input_dims
         self.n_features = np.prod(input_dims)
         self.hid_out_dims = hid_out_dims
-        self.dropout = dropout
+        self.dropout_size_list = dropout_size_list
         self.batch_size = batch_size
         self.eps_min = eps_min
         self.eps_dec = eps_dec
@@ -130,7 +151,7 @@ class Agent:
             name=f"q_eval_{pipeline_id}",
             chkpt_dir=self.chkpt_dir,
             hid_out_dims=self.hid_out_dims,
-            dropout=self.dropout,
+            dropout_size_list=self.dropout_size_list,
         )
 
         self.q_next = DuelingDeepQNetwork(
@@ -140,12 +161,14 @@ class Agent:
             name=f"q_next_{pipeline_id}",
             chkpt_dir=self.chkpt_dir,
             hid_out_dims=self.hid_out_dims,
-            dropout=self.dropout,
+            dropout_size_list=self.dropout_size_list,
         )
 
     def choose_action(self, observation):
         if np.random.random() >= self.epsilon:
-            state = T.tensor([observation], dtype=T.float32).to(self.q_eval.device)
+            state = T.tensor(
+                np.array([observation], dtype=np.float32), dtype=T.float32
+            ).to(self.q_eval.device)
             _, advantage = self.q_eval.forward(state)
             action = T.argmax(advantage).item()
         else:
