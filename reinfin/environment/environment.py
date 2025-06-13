@@ -60,7 +60,7 @@ class Environment(Env):
         self.purchase_price_memory = []
         self.shares_held_memory = np.zeros(len(self.df), dtype=np.float32)
         self.cash_balance_memory = np.zeros(len(self.df), dtype=np.float32)
-        self.dividend_memory = np.zeros(len(self.df), dtype=np.float32)
+        self.dividend_balance_memory = np.zeros(len(self.df), dtype=np.float32)
 
     def reset(self):
         self.current_step = 0
@@ -89,7 +89,10 @@ class Environment(Env):
             shares_held = self.shares_held_memory[
                 self.current_step + 1 - self.lookback : self.current_step + 1
             ]
-            balance = self.cash_balance_memory[
+            cash_balance = self.cash_balance_memory[
+                self.current_step + 1 - self.lookback : self.current_step + 1
+            ]
+            dividend_balance = self.dividend_balance_memory[
                 self.current_step + 1 - self.lookback : self.current_step + 1
             ]
         else:
@@ -110,13 +113,19 @@ class Environment(Env):
                 (0, self.lookback - (self.current_step + 1)),
                 constant_values=shares_held[self.current_step],
             )
-            balance = self.cash_balance_memory[: self.current_step + 1]
-            balance = np.pad(
-                balance,
+            cash_balance = self.cash_balance_memory[: self.current_step + 1]
+            cash_balance = np.pad(
+                cash_balance,
                 (0, self.lookback - (self.current_step + 1)),
-                constant_values=balance[self.current_step],
+                constant_values=cash_balance[self.current_step],
             )
-        arr_list = [balance, shares_held] + [
+            dividend_balance = self.dividend_balance_memory[: self.current_step + 1]
+            dividend_balance = np.pad(
+                dividend_balance,
+                (0, self.lookback - (self.current_step + 1)),
+                constant_values=dividend_balance[self.current_step],
+            )
+        arr_list = [cash_balance, shares_held, dividend_balance] + [
             rows[col].to_numpy()
             for col in self.df.columns
             if col not in ["trade_count", "close"]
@@ -134,7 +143,7 @@ class Environment(Env):
         self.cash_balance_memory[self.current_step] = self.cash_balance
 
         self.check_take_profit(current_price)
-        self.dividend_memory[self.current_step] = self.dividend_balance
+        self.dividend_balance_memory[self.current_step] = self.dividend_balance
 
         self.check_stop_loss(current_price)
 
