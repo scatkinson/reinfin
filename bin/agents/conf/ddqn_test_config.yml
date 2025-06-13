@@ -18,13 +18,13 @@ max_stop_loss_calls: 3
 # gamma controls how much previous rounds influence reward
 gamma: 0.999
 epsilon: 1.0
-batch_size: 32
+batch_size: 128
 eps_min: 0.1
 eps_dec: 0.0005
 n_features: 18
 lr: 0.00001
-hid_out_dims: [32,32]
-dropout_size_list: [0.5,0.5]
+hid_out_dims: [32,64,32]
+dropout_size_list: [0.25,0.5,0.25]
 replace_cnt: 100
 
 # if loading a checkpoint, the previous run's pipeline_id must be provided
