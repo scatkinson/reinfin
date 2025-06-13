@@ -63,8 +63,8 @@ class DuelingDeepQNetwork(nn.Module):
         self.chkpt_dir = chkpt_dir
         self.checkpoint_file = os.path.join(self.chkpt_dir, f"{name}.pt")
 
-        self.hidden_layers_list = []
-        self.dropout_list = []
+        self.hidden_layers_list = nn.ModuleList()
+        self.dropout_list = nn.ModuleList()
         for i, hid_out_dim in enumerate(hid_out_dims):
             if i == 0:
                 self.hidden_layers_list.append(
