@@ -19,7 +19,8 @@ class DDQNRunner:
     def run_ddqn(self):
         if self.conf.seed > 0:
             np.random.seed(self.conf.seed)
-            logging.info(f"Setting random seed to {np.random.seed}")
+            T.seed(self.conf.seed)
+            logging.info(f"Setting random seed to {self.conf.seed}")
 
         logging.info(f"Loading trade_file from {self.conf.train_file}.")
         train_df = pd.read_csv(self.conf.train_file, index_col=const.TIMESTAMP_COL)
