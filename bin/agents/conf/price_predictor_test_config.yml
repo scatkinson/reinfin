@@ -1,0 +1,18 @@
+logging_path: logs/price_predictor
+pipeline_id:
+
+seed: 2
+
+train_file: "data/train/spy_train.csv"
+eval_file: "data/eval/spy_eval.csv"
+
+hidden_sizes: [16, 8]
+num_layers: 2
+learning_rate: 0.00001
+dropout_list: [0.5,0.5]
+batch_size: 16
+epochs: 10000
+
+load_checkpoint: False
+
+save_model: True

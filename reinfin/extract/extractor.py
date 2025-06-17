@@ -18,7 +18,7 @@ class Extractor:
 
     def get_data(self):
         self.get_barsets()
-        self.append_yesterday_close()
+        self.append_yesterday_cols()
         self.get_sentiment()
         self.save_data()
 
@@ -31,9 +31,9 @@ class Extractor:
             end=self.conf.end_date,
         ).df
 
-    def append_yesterday_close(self):
+    def append_yesterday_cols(self):
         logging.info("Obtaining yesterday_close via df.shift(1).")
-        self.out_df["yesterday_close"] = self.out_df["today_close"].shift(1)
+        self.out_df["yesterday_close"] = self.out_df["close"].shift(1)
 
     def compute_sentiment(self, date):
         prev_day = date - Timedelta(days=1)
