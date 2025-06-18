@@ -6,12 +6,26 @@ seed: 2
 train_file: "data/train/spy_train.csv"
 eval_file: "data/eval/spy_eval.csv"
 
-hidden_sizes: [16, 8]
-num_layers: 2
-learning_rate: 0.00001
-dropout_list: [0.5,0.5]
-batch_size: 16
-epochs: 10000
+
+start_p: 0
+d: 1
+start_q: 0
+max_p: 5
+max_d: 5
+max_q: 5
+start_P: 0
+D: 1
+start_Q: 0
+max_P: 5
+max_D: 5
+max_Q: 5
+m: 12
+seasonal: True
+error_action: "warn"
+trace: True
+suppress_warnings: True
+stepwise: True
+n_fits: 10
 
 load_checkpoint: False
 

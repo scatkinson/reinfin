@@ -7,6 +7,7 @@ import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
 import pandas as pd
 from sklearn.metrics import root_mean_squared_error, r2_score
+from pmdarima import auto_arima
 
 import logging
 
@@ -17,46 +18,7 @@ from reinfin.util import plot_curve, plot_learning_curve
 
 def loss_MAPE(output, target):
     # MAPE loss
-    return T.mean(T.abs((target - output) / target))
-
-
-class LSTMModel(nn.Module):
-    def __init__(
-        self, input_size, hidden_sizes, num_layers, output_size, lr, dropout_size_list
-    ):
-        super(LSTMModel, self).__init__()
-        self.hidden_sizes = hidden_sizes
-        self.lstm = nn.LSTM(input_size, hidden_sizes[0], num_layers, batch_first=True)
-
-        self.hidden_layers_list = nn.ModuleList()
-        for i in range(len(hidden_sizes)):
-            if i + 1 == len(hidden_sizes):
-                self.hidden_layers_list.append(
-                    nn.Linear(in_features=hidden_sizes[i], out_features=output_size)
-                )
-            else:
-                self.hidden_layers_list.append(
-                    nn.Linear(
-                        in_features=hidden_sizes[i], out_features=hidden_sizes[i + 1]
-                    )
-                )
-
-        self.dropout_list = nn.ModuleList()
-        for dropout_size in dropout_size_list:
-            self.dropout_list.append(nn.Dropout(dropout_size))
-
-        self.optimizer = optim.Adam(self.parameters(), lr=lr)
-        self.loss = loss_MAPE
-        logging.info(f"Is CUDA available? {T.cuda.is_available()}")
-        self.device = T.device("cuda:0" if T.cuda.is_available() else "cpu")
-        self.to(self.device)
-
-    def forward(self, x):
-        lstm_out, _ = self.lstm(x)
-        for fc, dropout in zip(self.hidden_layers_list, self.dropout_list):
-            lstm_out = F.relu(fc(lstm_out))
-            lstm_out = dropout(lstm_out)
-        return lstm_out
+    return np.mean(np.abs((target - output) / target))
 
 
 class PricePredictor:
@@ -65,56 +27,50 @@ class PricePredictor:
         self.train_df = pd.read_csv(self.conf.train_file, index_col=const.TIMESTAMP_COL)
         self.eval_df = pd.read_csv(self.conf.eval_file, index_col=const.TIMESTAMP_COL)
 
-        self.model = LSTMModel(
-            input_size=len(self.train_df.columns) - 2,
-            hidden_sizes=self.conf.hidden_sizes,
-            num_layers=self.conf.num_layers,
-            output_size=1,
-            lr=self.conf.learning_rate,
-            dropout_size_list=self.conf.dropout_list,
+        self.X_train = self.train_df[
+            [
+                col
+                for col in self.train_df.columns
+                if col not in [const.CLOSE_COL, const.TRADE_COUNT_COL]
+            ]
+        ]
+        self.Y_train = self.train_df[const.CLOSE_COL]
+
+        self.model = auto_arima(
+            self.Y_train,
+            X=self.X_train,
+            start_p=self.conf.start_p,
+            d=self.conf.d,
+            start_q=self.conf.start_q,
+            max_p=self.conf.max_p,
+            max_d=self.conf.max_d,
+            max_q=self.conf.max_q,
+            start_P=self.conf.start_P,
+            D=self.conf.D,
+            start_Q=self.conf.start_Q,
+            max_P=self.conf.max_P,
+            max_D=self.conf.max_D,
+            max_Q=self.conf.max_Q,
+            m=self.conf.m,
+            seasonal=self.conf.seasonal,
+            error_action=self.conf.error_action,
+            trace=self.conf.trace,
+            suppress_warnings=self.conf.suppress_warnings,
+            stepwise=self.conf.stepwise,
+            random_state=self.conf.seed,
+            n_fits=self.conf.n_fits,
         )
 
-        self.X_train = T.tensor(
-            self.train_df[
-                [
-                    col
-                    for col in self.train_df.columns
-                    if col not in [const.TRADE_COUNT_COL, const.CLOSE_COL]
-                ]
-            ].values,
-            dtype=T.float32,
-        ).to(self.model.device)
-        self.Y_train = T.tensor(
-            self.train_df[const.CLOSE_COL].values, dtype=T.float32
-        ).to(self.model.device)
+        self.X_eval = self.eval_df[
+            [
+                col
+                for col in self.eval_df.columns
+                if col not in [const.TRADE_COUNT_COL, const.CLOSE_COL]
+            ]
+        ]
+        self.Y_eval = self.eval_df[const.CLOSE_COL]
 
-        self.dataset_train = TensorDataset(self.X_train, self.Y_train)
-
-        self.dataloader_train = DataLoader(
-            self.dataset_train,
-            batch_size=self.conf.batch_size,
-        )
-
-        self.X_eval = T.tensor(
-            self.eval_df[
-                [
-                    col
-                    for col in self.eval_df.columns
-                    if col not in [const.TRADE_COUNT_COL, const.CLOSE_COL]
-                ]
-            ].values,
-            dtype=T.float32,
-        ).to(self.model.device)
-        self.Y_eval = T.tensor(
-            self.eval_df[const.CLOSE_COL].values, dtype=T.float32
-        ).to(self.model.device)
-
-        self.dataset_eval = TensorDataset(self.X_eval, self.Y_eval)
-
-        self.dataloader_eval = DataLoader(
-            self.dataset_eval,
-            batch_size=self.conf.batch_size,
-        )
+        self.y_pred = np.zeros(len(self.Y_eval))
 
         self.loss_values = []
 
@@ -124,44 +80,16 @@ class PricePredictor:
         self.save_model()
 
     def train_model(self):
-        logging.info("Training Model")
-        self.model.train()
-
-        for epoch in range(self.conf.epochs):
-            epoch_losses = []
-            for i, (inputs, labels) in enumerate(self.dataloader_train):
-                outputs = self.model(inputs)
-                loss = self.model.loss(outputs, labels)
-                self.model.optimizer.zero_grad()
-                loss.backward()
-                self.model.optimizer.step()
-                self.loss_values.append(loss.item())
-                epoch_losses.append(loss.item())
-            if (epoch + 1) % 200 == 0:
-                logging.info(f"Completed EPOCH {epoch + 1}")
-                logging.info(
-                    f"EPOCH {epoch + 1} average loss: {np.mean(epoch_losses)}."
-                )
-        logging.info(f"Saving train loss curve at {self.conf.train_loss_plot_path}.")
-        plot_learning_curve(self.loss_values, self.conf.train_loss_plot_path)
+        pass
 
     def eval_model(self):
-        eval_loss = []
-        with T.no_grad():
-            for i, (inputs, labels) in enumerate(self.dataloader_eval):
-                outputs = self.model(inputs)
-                loss = self.model.loss(outputs, labels)
-                eval_loss.append(loss.item())
-        logging.info(f"Average eval loss: {np.mean(eval_loss)}.")
-        y_pred = self.model(self.X_eval)
-        y_pred_numpy = y_pred.detach().numpy()
-        eval_error = root_mean_squared_error(y_pred_numpy, self.Y_eval.detach().numpy())
-        eval_r2 = r2_score(y_pred_numpy, self.Y_eval.detach().numpy())
-        eval_mape = loss_MAPE(y_pred, self.Y_eval).item()
-        logging.info(f"EVAL RMSE: {eval_error}.")
-        logging.info(f"EVAL R^2: {eval_r2}.")
-        logging.info(f"EVAL MAPE: {eval_mape}.")
+        self.y_pred = self.model.predict(len(self.X_eval), X=self.X_eval).to_numpy()
+        eval_r2 = r2_score(self.y_pred, self.Y_eval)
+        eval_mape = loss_MAPE(self.y_pred, self.Y_eval.to_numpy())
+        logging.info(f"EVAL R^2: {eval_r2}")
+        logging.info(f"EVAL MAPE: {eval_mape}")
 
     def save_model(self):
-        logging.info(f"Saving model at {self.conf.model_path}")
-        T.save(self.model.state_dict(), self.conf.model_path)
+        out_df = pd.DataFrame(self.y_pred, index=self.Y_eval.index)
+        logging.info(f"Saving predicted prices to {self.conf.model_path}.")
+        out_df.to_csv(self.conf.model_path)
