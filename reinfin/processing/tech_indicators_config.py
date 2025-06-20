@@ -14,6 +14,8 @@ class TechIndicatorsConfig(Config):
 
     df_path: str
 
+    forecast_path: str
+
     ema_period: int
 
     rsi_period: int
@@ -47,6 +49,7 @@ class TechIndicatorsConfig(Config):
             "logging_path": str,
             "pipeline_id": str,
             "df_path": str,
+            "forecast_path": str,
             "ema_period": int,
             "rsi_period": int,
             "macd_period_fast": int,

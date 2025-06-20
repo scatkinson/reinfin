@@ -8,6 +8,8 @@ from torch.utils.data import TensorDataset, DataLoader, RandomSampler, Sequentia
 import pandas as pd
 from sklearn.metrics import root_mean_squared_error, r2_score
 from pmdarima import auto_arima
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 import logging
 
@@ -70,7 +72,8 @@ class PricePredictor:
         ]
         self.Y_eval = self.eval_df[const.CLOSE_COL]
 
-        self.y_pred = np.zeros(len(self.Y_eval))
+        self.y_train_pred = np.zeros(len(self.Y_train))
+        self.y_eval_pred = np.zeros(len(self.Y_eval))
 
         self.loss_values = []
 
@@ -83,13 +86,73 @@ class PricePredictor:
         pass
 
     def eval_model(self):
-        self.y_pred = self.model.predict(len(self.X_eval), X=self.X_eval).to_numpy()
-        eval_r2 = r2_score(self.y_pred, self.Y_eval)
-        eval_mape = loss_MAPE(self.y_pred, self.Y_eval.to_numpy())
+        logging.info("Obtaining in-sample forecast predictions")
+        self.y_train_pred = self.model.predict_in_sample(X=self.X_train).to_numpy()
+
+        self.y_eval_pred = self.model.predict(
+            len(self.X_eval), X=self.X_eval
+        ).to_numpy()
+        eval_r2 = r2_score(self.y_eval_pred, self.Y_eval)
+        eval_mape = loss_MAPE(self.y_eval_pred, self.Y_eval.to_numpy())
         logging.info(f"EVAL R^2: {eval_r2}")
         logging.info(f"EVAL MAPE: {eval_mape}")
 
+        plt.clf()
+        fig, ax = plt.subplots()
+        ax.plot(
+            pd.to_datetime(self.Y_train.index), self.Y_train.to_numpy(), label="True"
+        )
+        ax.plot(pd.to_datetime(self.Y_train.index), self.y_train_pred, label="Pred")
+
+        fig.suptitle("True v Predicted Train Stock Prices")
+        ax.set_xlabel("Time")
+        ax.set_ylabel("Stock price in USD")
+
+        # Set major ticks every 10 days
+        ax.xaxis.set_major_locator(mdates.DayLocator(interval=40))
+
+        # Format the major tick labels (e.g., as 'YYYY-MM-DD')
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
+        plt.xticks(rotation=45)
+        plt.legend()
+        plt.tight_layout()
+        logging.info(
+            f"Saving train figure at {self.conf.train_forecast_plot_filename}."
+        )
+        fig.savefig(self.conf.train_forecast_plot_path)
+
+        plt.clf()
+        fig, ax = plt.subplots()
+        ax.plot(pd.to_datetime(self.Y_eval.index), self.Y_eval.to_numpy(), label="True")
+        ax.plot(pd.to_datetime(self.Y_eval.index), self.y_eval_pred, label="Pred")
+
+        fig.suptitle("True v Predicted Eval Stock Prices")
+        ax.set_xlabel("Time")
+        ax.set_ylabel("Stock price in USD")
+
+        # Set major ticks every 10 days
+        ax.xaxis.set_major_locator(mdates.DayLocator(interval=20))
+
+        # Format the major tick labels (e.g., as 'YYYY-MM-DD')
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
+        plt.xticks(rotation=45)
+        plt.legend()
+        plt.tight_layout()
+        logging.info(f"Saving eval figure at {self.conf.eval_forecast_plot_filename}.")
+        fig.savefig(self.conf.eval_forecast_plot_path)
+
     def save_model(self):
-        out_df = pd.DataFrame(self.y_pred, index=self.Y_eval.index)
-        logging.info(f"Saving predicted prices to {self.conf.model_path}.")
-        out_df.to_csv(self.conf.model_path)
+        train_out_df = pd.DataFrame(
+            self.y_train_pred, index=self.Y_train.index, columns=[const.CLOSE_COL]
+        )
+        logging.info(
+            f"Saving predicted in-sample prices to {self.conf.train_predictions_path}."
+        )
+        train_out_df.to_csv(self.conf.train_predictions_path)
+        eval_out_df = pd.DataFrame(
+            self.y_eval_pred, index=self.Y_eval.index, columns=[const.CLOSE_COL]
+        )
+        logging.info(
+            f"Saving predicted eval prices to {self.conf.eval_predictions_path}."
+        )
+        eval_out_df.to_csv(self.conf.eval_predictions_path)

@@ -56,9 +56,15 @@ class PricePredictorConfig(Config):
             os.makedirs(self.image_save_directory, exist_ok=True)
             os.makedirs(self.model_save_directory, exist_ok=True)
 
-        self.train_loss_plot_filename = f"train_loss_plot_{self.pipeline_id}.png"
-        self.train_loss_plot_path = os.path.join(
-            self.image_save_directory, self.train_loss_plot_filename
+        self.train_forecast_plot_filename = (
+            f"train_forecast_plot_{self.pipeline_id}.png"
+        )
+        self.train_forecast_plot_path = os.path.join(
+            self.image_save_directory, self.train_forecast_plot_filename
+        )
+        self.eval_forecast_plot_filename = f"eval_forecast_plot_{self.pipeline_id}.png"
+        self.eval_forecast_plot_path = os.path.join(
+            self.image_save_directory, self.eval_forecast_plot_filename
         )
         self.train_scores_plot_filename = f"train_scores_plot_{self.pipeline_id}.png"
         self.train_scores_plot_path = os.path.join(
@@ -106,8 +112,14 @@ class PricePredictorConfig(Config):
             self.image_save_directory, self.eval_actions_plot_filename
         )
 
-        self.model_filename = f"price_predictor_model_{self.pipeline_id}.csv"
-        self.model_path = os.path.join(self.model_save_directory, self.model_filename)
+        self.train_predictions_filename = f"train_predictions_{self.pipeline_id}.csv"
+        self.train_predictions_path = os.path.join(
+            self.model_save_directory, self.train_predictions_filename
+        )
+        self.eval_predictions_filename = f"eval_predictions_{self.pipeline_id}.csv"
+        self.eval_predictions_path = os.path.join(
+            self.model_save_directory, self.eval_predictions_filename
+        )
 
     @property
     def required_config(self):
