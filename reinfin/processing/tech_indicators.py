@@ -45,7 +45,9 @@ class TechIndicators:
             signal=self.conf.macd_signal,
         )
         logging.info("Shifting MACD values")
-        self.df[[const.MACD_COL, const.MACD_SIGNAL_COL]] = self.df[[const.MACD_COL, const.MACD_SIGNAL_COL]].shift(1)
+        self.df[[const.MACD_COL, const.MACD_SIGNAL_COL]] = self.df[
+            [const.MACD_COL, const.MACD_SIGNAL_COL]
+        ].shift(1)
 
     def compute_bbands(self):
         logging.info("Obtaining BBANDS values")
@@ -55,10 +57,11 @@ class TechIndicators:
         logging.info("Shifting BBANDS values")
         self.df[
             [const.UPPER_BBANDS_COL, const.MIDDLE_BBANDS_COL, const.LOWER_BBANDS_COL]
-        ] =
-        self.df[
+        ] = self.df[
             [const.UPPER_BBANDS_COL, const.MIDDLE_BBANDS_COL, const.LOWER_BBANDS_COL]
-        ].shift(1)
+        ].shift(
+            1
+        )
 
     def compute_stoch(self):
         logging.info("Obtaining STOCH values")

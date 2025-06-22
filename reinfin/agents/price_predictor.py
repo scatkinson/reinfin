@@ -33,7 +33,8 @@ class PricePredictor:
             [
                 col
                 for col in self.train_df.columns
-                if col not in [const.CLOSE_COL, const.TRADE_COUNT_COL]
+                if col
+                not in [const.CLOSE_COL, const.TRADE_COUNT_COL, const.PRED_CLOSE_COL]
             ]
         ]
         self.Y_train = self.train_df[const.CLOSE_COL]
@@ -67,7 +68,8 @@ class PricePredictor:
             [
                 col
                 for col in self.eval_df.columns
-                if col not in [const.TRADE_COUNT_COL, const.CLOSE_COL]
+                if col
+                not in [const.TRADE_COUNT_COL, const.CLOSE_COL, const.PRED_CLOSE_COL]
             ]
         ]
         self.Y_eval = self.eval_df[const.CLOSE_COL]
@@ -143,14 +145,14 @@ class PricePredictor:
 
     def save_model(self):
         train_out_df = pd.DataFrame(
-            self.y_train_pred, index=self.Y_train.index, columns=[const.CLOSE_COL]
+            self.y_train_pred, index=self.Y_train.index, columns=[const.PRED_CLOSE_COL]
         )
         logging.info(
             f"Saving predicted in-sample prices to {self.conf.train_predictions_path}."
         )
         train_out_df.to_csv(self.conf.train_predictions_path)
         eval_out_df = pd.DataFrame(
-            self.y_eval_pred, index=self.Y_eval.index, columns=[const.CLOSE_COL]
+            self.y_eval_pred, index=self.Y_eval.index, columns=[const.PRED_CLOSE_COL]
         )
         logging.info(
             f"Saving predicted eval prices to {self.conf.eval_predictions_path}."

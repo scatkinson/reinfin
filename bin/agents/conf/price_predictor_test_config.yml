@@ -3,8 +3,8 @@ pipeline_id:
 
 seed: 2
 
-train_file: "data/train/spy_train.csv"
-eval_file: "data/eval/spy_eval.csv"
+train_file: "data/train/spy_train_ti.csv"
+eval_file: "data/eval/spy_eval_2024_ti.csv"
 
 
 start_p: 0

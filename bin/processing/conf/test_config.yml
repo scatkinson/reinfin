@@ -1,7 +1,7 @@
 logging_path: "/tmp/logs"
 pipeline_id: eval
 
-df_path: "data/eval/spy_eval_sent.csv"
+df_path: "data/eval/spy_eval_2024.csv"
 
 ema_period: 45
 
