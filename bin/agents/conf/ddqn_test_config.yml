@@ -3,8 +3,8 @@ pipeline_id:
 
 seed: 2
 
-train_file: "data/train/spy_train_sent_ti.csv"
-eval_file: "data/eval/spy_eval_2023_sent_ti.csv"
+train_file: "data/train/spy_train_ti.csv"
+eval_file: "data/eval/spy_eval_2023_ti.csv"
 
 start_cash_balance: 100000
 cash_at_risk: 0.85
