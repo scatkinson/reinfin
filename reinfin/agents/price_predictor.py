@@ -133,7 +133,7 @@ class PricePredictor:
         ax.set_ylabel("Stock price in USD")
 
         # Set major ticks every 10 days
-        ax.xaxis.set_major_locator(mdates.DayLocator(interval=20))
+        ax.xaxis.set_major_locator(mdates.DayLocator(interval=40))
 
         # Format the major tick labels (e.g., as 'YYYY-MM-DD')
         ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
