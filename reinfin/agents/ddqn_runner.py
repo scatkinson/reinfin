@@ -9,6 +9,8 @@ import numpy as np
 import logging
 import torch as T
 from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 
 class DDQNRunner:
@@ -133,6 +135,7 @@ class DDQNRunner:
         if self.conf.eval_file:
             # evaluating agent
             eval_df = pd.read_csv(self.conf.eval_file, index_col=const.TIMESTAMP_COL)
+            plot_index = np.array(pd.to_datetime(eval_df.index))
             eval_df.fillna(method="bfill", inplace=True)
             eval_env = Environment(
                 eval_df,
@@ -188,7 +191,44 @@ class DDQNRunner:
             logging.info(
                 f"BENCHMARK Multiplier: {eval_df['close'].iloc[-1]/eval_df['close'].iloc[0]}"
             )
+            net_worths = np.pad(
+                np.array(net_worths), (1, 0), constant_values=net_worths[0]
+            )
 
             plot_curve(scores, self.conf.eval_scores_plot_path)
-            plot_curve(net_worths, self.conf.eval_net_worths_plot_path)
+            # plot_curve(net_worths, self.conf.eval_net_worths_plot_path)
+
+            plt.clf()
+            fig, ax = plt.subplots()
+            ax.plot(plot_index, net_worths, label="Model")
+            # buy shares on first day
+            benchmark_shares_purchased = (
+                eval_env.start_cash_balance / eval_env.df["close"].iloc[0]
+            )
+            # never sell...portfolio value on each day
+            benchmark_portfolio_value = (
+                benchmark_shares_purchased * eval_env.df["close"].values
+            )
+            ax.plot(
+                plot_index,
+                benchmark_portfolio_value,
+                label="Benchmark",
+            )
+
+            fig.suptitle("Model v Benchmark Portfolio Values")
+            ax.set_xlabel("Time")
+            ax.set_ylabel("USD")
+
+            # Set major ticks every 10 days
+            ax.xaxis.set_major_locator(mdates.DayLocator(interval=40))
+
+            # Format the major tick labels (e.g., as 'YYYY-MM-DD')
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
+            plt.xticks(rotation=45)
+            plt.legend()
+            plt.tight_layout()
+            logging.info(
+                f"Saving eval figure at {self.conf.eval_net_worths_plot_path}."
+            )
+            fig.savefig(self.conf.eval_net_worths_plot_path)
             plot_curve([x[1] for x in action_history], self.conf.eval_actions_plot_path)
