@@ -1,10 +1,10 @@
 <br>
 
-<center>
+<div align="center">
 
 <img src="product_image.png" alt="ReinFin Logo" width="50%" height="50%">
 
-</center>
+</div>
 
 # ReinFin
 Reinforcement learning in finance.
