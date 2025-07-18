@@ -177,15 +177,12 @@ The $Q$ function quantifies the value of choosing the action $a$ in state $s$.
 The **value** function $V$ measures how good it is to be in state $s$. 
 The **advantage** function $A$ reflects a relative (within a fixed state) measure of importance of each action--this is what we will use to choose which actions to take.
 
-$Q(s,a)$ satisfies the following recursive formula:
+$Q(s,a)$ satisfies the following recursive formula: $`Q^\pi(s,a) = \mathbb{E}_{s'}[r + \gamma \mathbb{E}_{a'\sim \pi(s')}[Q^\pi(s',a')] | s,a,\pi]`$
 
-$`$`Q^\pi(s,a) = \mathbb{E}_{s'}[r + \gamma \mathbb{E}_{a'\sim \pi(s')}[Q^\pi(s',a')] | s,a,\pi]`$`$
-
-Let $Q^*(s,a):= \text{max}_\pi Q^\pi(s,a)$ denote the optimal $Q$-function.  
+Let $`Q^*(s,a):= \text{max}_\pi Q^\pi(s,a)`$ denote the optimal $Q$-function.  
 This gives a deterministic optimal policy: $a = \text{argmax}_{a'\in \mathcal{A}}Q^*(s,a')$. The optimal state-value $V^*$ is then given by $V^*(s) = \text{max}_a Q^*(s,a)$. 
 It follows that $Q^*$ satisfies the Bellman equation:
-
-$$Q^*(s,a) = \mathbb{E}_{s'}[r + \gamma\text{max}_{a'}Q^*(s',a')|s,a]$$
+$`Q^*(s,a) = \mathbb{E}_{s'}[r + \gamma\text{max}_{a'}Q^*(s',a')|s,a]`$
 
 In general, obtaining such functions is computationally unavailable. So we use an approximating \emph{Deep Q network} $Q(s,a;\theta)$ where $\theta$ denotes the network's parameters. 
 In our use-case this is a fully-connected feed-forward network with several hidden layers.
