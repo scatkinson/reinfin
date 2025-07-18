@@ -180,7 +180,7 @@ The **advantage** function $A$ reflects a relative (within a fixed state) measur
 $Q(s,a)$ satisfies the following recursive formula: $`Q^\pi(s,a) = \mathbb{E}_{s'}[r + \gamma \mathbb{E}_{a'\sim \pi(s')}[Q^\pi(s',a')] | s,a,\pi]`$
 
 Let $`Q^*(s,a):= \text{max}_\pi Q^\pi(s,a)`$ denote the optimal $Q$-function.  
-This gives a deterministic optimal policy: $`a = \text{argmax}_{a'\in \mathcal{A}}Q^*(s,a')`$. The optimal state-value $V^*$ is then given by $`V^*(s) = \text{max}_a Q^*(s,a)`$. 
+This gives a deterministic optimal policy: $`a = \text{argmax}_{a'\in \mathcal{A}}Q^*(s,a')`$. The optimal state-value $`V^*`$ is then given by $`V^*(s) = \text{max}_a Q^*(s,a)`$. 
 It follows that $Q^*$ satisfies the Bellman equation:
 ```math
 Q^*(s,a) = \mathbb{E}_{s'}[r + \gamma\text{max}_{a'}Q^*(s',a')|s,a]
@@ -189,22 +189,27 @@ Q^*(s,a) = \mathbb{E}_{s'}[r + \gamma\text{max}_{a'}Q^*(s',a')|s,a]
 In general, obtaining such functions is computationally unavailable. So we use an approximating \emph{Deep Q network} $Q(s,a;\theta)$ where $\theta$ denotes the network's parameters. 
 In our use-case this is a fully-connected feed-forward network with several hidden layers.
 For our network, we use the MSE loss function as follows:
-
-$$L_i(\theta_i) = \mathbb{E}_{s,a,r,s'}\left[\left(y_i^\text{DQN} - Q(s,a;\theta_i)\right)^2\right]$$
-
+```math
+L_i(\theta_i) = \mathbb{E}_{s,a,r,s'}\left[\left(y_i^\text{DQN} - Q(s,a;\theta_i)\right)^2\right]
+```
 with
 
-$$y_i^\text{DQN} = r + \gamma\text{max}_{a'} Q(s',a';\theta^-)$$
+```math
+y_i^\text{DQN} = r + \gamma\text{max}_{a'} Q(s',a';\theta^-)
+```
 
 where $\theta^-$ represents the parameters of a fixed, separate target network (an earlier iteration of the current network). 
 For several cycles of forward and backward passes, this target network is used to form the target value, then it is updated.
 
 Double Deep Q Networks were introduced to improve the performance of Deep Q Networks by changing the target value to
 
-$$y_i^\text{DDQN} = r + \gamma Q(s',\text{argmax}_{a'}Q(s',a';\theta_i);\theta^-).$$
+```math
+y_i^\text{DDQN} = r + \gamma Q(s',\text{argmax}_{a'}Q(s',a';\theta_i);\theta^-).
+```
 
 The idea for Dueling Deep Q Networks is to build upon the architecture of Double Deep Q networks by splitting the $Q$ network into two separate network streams: one for the $V$ function and one for the $A$ function. 
 So the network $Q(s,a;\theta,\alpha,\beta)$ would be assembled from $V(s; \theta, \beta)$ and $A(s,a;\theta,\alpha)$ as follows:
+
 $$Q(s,a;\theta,\alpha,\beta) = V(s;\theta,\beta) + \left(A(s,a;\theta,\alpha) - \frac{1}{|\mathcal{A}|}\sum_{a'} A(s,a';\theta,\alpha)\right).$$
 
 The network is trained by repeated runs of game-play following an $\epsilon$-greedy strategy.
