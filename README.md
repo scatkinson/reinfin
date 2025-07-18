@@ -26,6 +26,11 @@ Reinforcement learning in finance.
 * ### [2.3 `logs`](#2.3_logs)
 * ### [2.4 `model`](#2.4_model)
 * ### [2.5 `reinfin`](#2.5_reinfin)
+  * #### [2.5.0 `agents`](#2.5.0_agents)
+  * #### [2.5.1 `environment`](#2.5.1_environment)
+  * #### [2.5.2 `extract`](#2.5.2_extract)
+  * #### [2.5.3 `processing`](#2.5.3_processing)
+  * #### [2.5.4 Top-level utilities](#2.5.4_Top-level_utilities)
 
 ## [3. Results](#3._Results)
 
@@ -42,6 +47,12 @@ The agent learns to make decisions by interacting with an environment.
 The goal is to learn a policy that maximizes cumulative reward over time. 
 At each step, the agent observes the current state, chooses an action, receives a reward, and transitions to a new state. 
 Through trial and error, the agent learns which actions yield the most favorable long-term outcomes.
+
+Key concepts:
+* **Agent:** The decision-maker.
+* **Environment:** The scenario with which the agent interacts.
+* **Reward:** Feedback signal for each action.
+* **Policy:** The strategy that the agent follows to select actions.
 
 Some common applications of RL include 
 * gaming 
@@ -101,3 +112,47 @@ The model directory is where the trained `ddqn` models are saved (given the appr
 ### 2.5 'reinfin' <a id='2.5_reinfin'></a>
 
 The `reinfin` directory is a Python library housing all the scripts for the project.
+
+#### 2.5.0 `agents` <a id='2.5.0_agents'></a>
+Holds trading agent implementations:
+
+* `ddqn_bot.py`: The main Dueling Double DQN agent logic.
+
+* `ddqn_runner.py`: Script to train, evaluate, and visualize a DDQN agent.
+
+* `price_predictor.py`: A supervised learning model for price prediction baseline. Utilizes Auto-ARIMA.
+
+* `tradingbot.py`: This is a simplified trading bot that uses the `alpaca_trade_api` and `lumibot` packages. 
+Serves as a secondary benchmark for DDQN agent performance.
+
+Accompanied by separate config modules (`*_config.py`).
+
+#### 2.5.1 `environment` <a id='2.5.1_environment'></a>
+Contains a Gym-like custom trading environment to simulate market interactions for the RL agent.
+
+#### 2.5.2 `extract` <a id='2.5.2_extract'></a>
+Extracts historical stock price data from external sources and stores it in the `data` directory.
+The extract also includes sentiment scores of relevant news headlines for the given stock symbol.
+
+* `extractor.py`: Core extraction logic.
+
+* `extractor_config.py`: Configuration for symbol, date range, etc.
+
+#### 2.5.3 `processing` <a id='2.5.3_processing'></a>
+Responsible for data transformation and feature engineering--mainly financial technical indicators.
+
+* `tech_indicators.py`: Appends financial indicators as features.
+
+* `tech_indicators_config.py`: Controls the indicators to compute and how.
+
+#### 2.5.4 Top-level utilities <a id='2.5.4_Top-level_utilities'></a>
+
+* `config.py` / `configamend.py`: Load and dynamically modify YAML configuration files.
+
+* `constants.py`: Global constants like default paths, column names, etc.
+
+* `finbert_utils.py`: Helper functions to integrate sentiment from FinBERT.
+
+* `log_wu.py`: Logging utilities.
+
+* `util.py`: Miscellaneous utilities shared across modules.
