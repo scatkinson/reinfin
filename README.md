@@ -14,9 +14,18 @@ Reinforcement learning in finance.
 
 ## [1. Introduction](#1._Introduction)
 
-### [1.0 Reinforcemnet Learning](#1.0_Reinforcement_Learning)
+* ### [1.0 Reinforcemnet Learning](#1.0_Reinforcement_Learning)
+* ### [1.1 Algorithmic Trading](#1.1_Algorithmic_Trading)
 
-## [2. Implementation](#2._Implementation)
+## [2. Code Base](#2._Code_Base)
+
+* ### [2.0 `bin`](#2.0_bin)
+  * #### [2.0.0 `conf`](#2.0.0_conf)
+* ### [2.1 `data`](#2.1_data)
+* ### [2.2 `images`](#2.2_images)
+* ### [2.3 `logs`](#2.3_logs)
+* ### [2.4 `model`](#2.4_model)
+* ### [2.5 `reinfin`](#2.5_reinfin)
 
 ## [3. Results](#3._Results)
 
@@ -53,4 +62,42 @@ This blend of finance, data science, and software engineering is a prime area fo
 In this project we use RL to develop a trading algorithm to make daily buy/sell/hold decisions for a single stock market symbol (SPY).
 This is just one of many examples of a trading algorithm from the fast-paced domain of algorithmic trading.
 
-## 2. Implementation <a id='2._Implementation'></a>
+## 2. Code Base <a id='2._Code_Base'></a>
+
+### 2.0 `bin` <a id='2.0_bin'></a>
+
+Each subdirectory in the `bin` directory contains the end-user Python scripts to be executed along with the `conf` subdirectory corresponding config files.
+These subdirectories are
+* `agents`: contains the end-user scripts for running the DDQN agent and the Price Predictor agent.
+* `extract`: contains the end-user script for running the data extract.
+* `processing`: contains the end-user script for obtaining the technical indicators as additional features for the data. 
+
+#### 2.0.0 `conf` <a id='2.0.0_conf'></a>
+
+The `conf` subdirectory contains the `.yml` config file to be passed via the `-c` flag to the appropriate `.py` end-user script.
+Here is an example of how an end-user script is executed on the command line:
+
+`python bin/agents/ddqn_runner.py -c bin/agents/conf/ddqn_test_config.yml`
+
+### 2.1 `data` <a id='2.1_data'></a>
+
+The `data` directory contains the stock data files. This is where the `extract` script delivers the extracted data,
+and it is where the `processing` scripts deliver the processed data files.
+
+### 2.2 `images` <a id='2.2_images'></a>
+
+The `images` directory contains the image files generated from scripts like the `ddqn_runn.py` and `price_predictor.py` scripts. 
+
+### 2.3 `logs` <a id='2.3_logs'></a>
+
+The `logs` directory is where all script logs are delivered. 
+Every time a script is executed, a logfile is generated and saved in an appropriate subdirectory of the `logs` directory.
+To avoid collisions each logfile's file name is appended with a `pipeline_id` that is randomly generated (unless it is set using the script's config file).
+
+### 2.4 `model` <a id='2.4_model'></a>
+
+The model directory is where the trained `ddqn` models are saved (given the appropriate config option is properly set).
+
+### 2.5 'reinfin' <a id='2.5_reinfin'></a>
+
+The `reinfin` directory is a Python library housing all the scripts for the project.
