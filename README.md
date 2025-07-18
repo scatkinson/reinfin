@@ -32,7 +32,7 @@ Reinforcement learning in finance.
   * #### [2.5.3 `processing`](#2.5.3_processing)
   * #### [2.5.4 Top-level utilities](#2.5.4_Top-level_utilities)
 
-## [3. Results](#3._Results)
+## [3. DDQN Discussion](#3._DDQN_discussion)
 
 ## [4. Next Steps](#4._Next_Steps)
 
@@ -156,3 +156,7 @@ Responsible for data transformation and feature engineering--mainly financial te
 * `log_wu.py`: Logging utilities.
 
 * `util.py`: Miscellaneous utilities shared across modules.
+
+## 3. DDQN Discussion <a id='3._DDQN_discussion'></a>
+
+Let $\mathcal{S}$ denote the state space of the game--all possible positions a player could find themselves in (e.g., various stock metrics leading up to trade time).
