@@ -106,7 +106,7 @@ The MACD line is calculated by subtracting the long-period EMA from the short-pe
 \text{MACD} = \text{EMA}_\text{long} - \text{EMA}_\text{short}
 ```
 ```math
-\text{MACD}_\text{signal} &= \text{EMA}_\text{midlength}
+\text{MACD}_\text{signal} = \text{EMA}_\text{midlength}
 ```
 
 **Bolinger Bands**
@@ -114,13 +114,13 @@ The MACD line is calculated by subtracting the long-period EMA from the short-pe
 Bollinger Bands are a popular technical analysis tool used by stock market traders to assess price volatility and identify potential buy or sell signals.
 
 ```math
-\text{Upper band} &= N\text{-day SMA} + N\text{-day SD}\cdot 2
+\text{Upper band} = N\text{-day SMA} + N\text{-day SD}\cdot 2
 ```
 ```math
-\text{Middle band} &= N\text{-day SMA}
+\text{Middle band} = N\text{-day SMA}
 ```
 ```math
-\text{Lower band} &= N\text{-day SMA} - N\text{-day SD}\cdot 2
+\text{Lower band} = N\text{-day SMA} - N\text{-day SD}\cdot 2
 ```
 
 **Stochastic Oscillator**
