@@ -8,8 +8,8 @@ from reinfin.finbert_utils import estimate_sentiment
 
 from datetime import datetime
 
-API_KEY = "PKCURVNOMTTKV9O3BHYS"
-API_SECRET = "7vhBLuCOyRLnMWFluEWsedjIiNzXL29o7Crbttuc"
+API_KEY = "*****"
+API_SECRET = "*****"
 BASE_URL = "https://paper-api.alpaca.markets/v2"
 
 SYMBOL = "SPY"
