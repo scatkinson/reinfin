@@ -166,8 +166,11 @@ $$R_t = \sum_{\tau =t}^\infty \gamma^{\tau-t}r_\tau,$$
 where $\gamma \in [0,1]$ is a discount factor that quantifies the importance of immediate v. future rewards.
 
 Given a stochastic policy (distribution of action choices given a state) $\pi$, the corresponding values of a given state-action pair $(s,a) \in \mathcal{S}\times \mathcal{A}$ are 
+
 $$Q^\pi(s,a) = \mathbb{E}[R_t|s_t = s, a_t = a, \pi]$$
+
 $$V^\pi(s) = \mathbb{E}_{a\sim \pi(s)}[Q^\pi(s,a)]$$
+
 $$A^\pi(s,a) = Q^\pi(s,a) - V^\pi(s)$$
 
 The $Q$ function quantifies the value of choosing the action $a$ in state $s$. 
@@ -175,11 +178,13 @@ The **value** function $V$ measures how good it is to be in state $s$.
 The **advantage** function $A$ reflects a relative (within a fixed state) measure of importance of each action--this is what we will use to choose which actions to take.
 
 $Q(s,a)$ satisfies the following recursive formula:
+
 $$Q^\pi(s,a) = \mathbb{E}_{s'}[r + \gamma \mathbb{E}_{a'\sim \pi(s')}[Q^\pi(s',a')] | s,a,\pi]$$
 
 Let $Q^*(s,a):= \text{max}_\pi Q^\pi(s,a)$ denote the optimal $Q$-function.  
 This gives a deterministic optimal policy: $a = \text{argmax}_{a'\in \mathcal{A}}Q^*(s,a')$. The optimal state-value $V^*$ is then given by $V^*(s) = \text{max}_a Q^*(s,a)$. 
 It follows that $Q^*$ satisfies the Bellman equation:
+
 $$Q^*(s,a) = \mathbb{E}_{s'}[r + \gamma\text{max}_{a'}Q^*(s',a')|s,a]$$
 
 In general, obtaining such functions is computationally unavailable. So we use an approximating \emph{Deep Q network} $Q(s,a;\theta)$ where $\theta$ denotes the network's parameters. 
