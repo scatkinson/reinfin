@@ -1,8 +1,8 @@
 logging_path: "/tmp/logs"
 pipeline_id:
 
-api_key: PKCURVNOMTTKV9O3BHYS
-api_secret: 7vhBLuCOyRLnMWFluEWsedjIiNzXL29o7Crbttuc
+api_key: *****
+api_secret: *****
 base_url: "https://paper-api.alpaca.markets/v2"
 
 start_date: "2019-12-15"
